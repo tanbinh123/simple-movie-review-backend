@@ -1,0 +1,30 @@
+### 用户登录获取X-oken
+
+POST {{baseUrl}}/account/login
+Content-Type: application/json
+
+{
+  "userName": "admin",
+  "password": "Password"
+}
+
+> {%
+client.global.set("X-Token", response.body.data.token);
+%}
+
+
+### 获取用户Profile
+
+GET {{baseUrl}}/account/profile
+Accept: application/json
+X-Token:{{X-Token}}
+
+### 获取所有的系统用户
+GET {{baseUrl}}/account/all/user
+Accept: application/json
+X-Token:{{X-Token}}
+
+###
+
+
+
