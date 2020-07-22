@@ -6,7 +6,7 @@
 ![create_database](./create_database.png)
 
 > 项目路径 src/main/resources/sql 中存在 3个SQL文件 
- * 1. lana_cc_backend.sql 项目的数据结构相关文件,复制或者导入到Mysql数据库中
+ * 1. movie_review_backend.sql 项目的数据结构相关文件,复制或者导入到Mysql数据库中
  * 2. 打开数据库右键属性 运行SQL文件
  ![create_database1](./sql1.png)
  ![create_database1](./sql2.png)
