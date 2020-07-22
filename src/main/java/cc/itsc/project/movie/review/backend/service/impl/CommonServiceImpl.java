@@ -1,11 +1,10 @@
 package cc.itsc.project.movie.review.backend.service.impl;
 
-import cc.itsc.project.movie.review.backend.pojo.vo.common.ServiceResponseMessage;
-import cc.itsc.project.movie.review.backend.pojo.vo.rsp.UploadImageRsp;
 import cc.itsc.project.movie.review.backend.service.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

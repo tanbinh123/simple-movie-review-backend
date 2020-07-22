@@ -4,9 +4,13 @@ import cc.itsc.project.movie.review.backend.annotation.Security;
 import cc.itsc.project.movie.review.backend.pojo.enums.RoleEnum;
 import cc.itsc.project.movie.review.backend.pojo.vo.common.ServiceResponseMessage;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.LoginReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.req.RegisterReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.DefaultHttpRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.LoginRsp;
+import cc.itsc.project.movie.review.backend.service.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +24,20 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/account", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AccountController {
+    @Autowired
+    AccountService accountService;
 
     @Security(roles = RoleEnum.ALL, checkToken = false)
     @PostMapping(value = "/login",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("用户登录")
     public ServiceResponseMessage<LoginRsp> login(@RequestBody @Validated LoginReq loginReq) {
         return ServiceResponseMessage.createBySuccessCodeMessage(new LoginRsp());
+    }
+
+    @Security(roles = RoleEnum.ALL, checkToken = false)
+    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ServiceResponseMessage<DefaultHttpRsp> signIn(@RequestBody RegisterReq registerReq) {
+        return ServiceResponseMessage.createBySuccessCodeMessage();
     }
 
 
@@ -38,11 +50,7 @@ public class AccountController {
 //        return accountService.login(loginReq);
 //    }
 //
-//    @Security(roles = RoleEnum.ALL, checkToken = false)
-//    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ServiceResponseMessage signIn(@RequestBody RegisterReq registerReq) {
-//        return accountService.signIn(registerReq);
-//    }
+
 //
 //    @Security(roles = {RoleEnum.USER, RoleEnum.OSS})
 //    @PutMapping(value = "/modify", produces = MediaType.APPLICATION_JSON_VALUE)
