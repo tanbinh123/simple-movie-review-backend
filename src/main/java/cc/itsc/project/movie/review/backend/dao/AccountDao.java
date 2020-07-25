@@ -111,7 +111,7 @@ public interface AccountDao {
      * @param uid 用户uid
      */
     @Delete("delete from lana_account where uid = #{uid} limit 1")
-    void deleteAccountProfileByUid(@Param("uid") Integer uid);
+    int deleteAccountProfileByUid(@Param("uid") Integer uid);
 
     /**
      * 更新用户密码

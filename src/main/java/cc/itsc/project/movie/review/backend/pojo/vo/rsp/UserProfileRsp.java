@@ -38,6 +38,7 @@ public class UserProfileRsp implements HttpResponse {
     private String role;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @ApiModelProperty(hidden = true)
     private String password = null;
 
     public Integer getUid() {

@@ -7,6 +7,7 @@ import cc.itsc.project.movie.review.backend.exception.AccountNotFoundException;
 import cc.itsc.project.movie.review.backend.exception.AccountVerificationFailedException;
 import cc.itsc.project.movie.review.backend.pojo.enums.RoleEnum;
 import cc.itsc.project.movie.review.backend.pojo.po.AccountPO;
+import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyAccountPasswordReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyProfileReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.SignInReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.SignUpReq;
@@ -18,7 +19,6 @@ import cc.itsc.project.movie.review.backend.utils.HttpUtil;
 import cc.itsc.project.movie.review.backend.utils.JWTUtil;
 import cc.itsc.project.movie.review.backend.utils.ObjectUtil;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -30,8 +30,11 @@ import java.util.UUID;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-    @Autowired
-    AccountDao accountDao;
+    private final AccountDao accountDao;
+
+    public AccountServiceImpl(AccountDao accountDao) {
+        this.accountDao = accountDao;
+    }
 
     @Override
     public SignRsp signIn(SignInReq signInReq) {
@@ -116,94 +119,22 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
+    @Override
+    public boolean modifyAccountPassword(ModifyAccountPasswordReq modifyAccountPasswordReq) {
+        if (ObjectUtil.isNotEmpty(modifyAccountPasswordReq.getUid())) {
+            AccountPO accountInfo = accountDao.selectAccountInfoByUid(modifyAccountPasswordReq.getUid());
+            if (null != accountInfo) {
+                String newPassword = AESUtil.encryptAES(accountInfo.getSecretKey(), modifyAccountPasswordReq.getPassword());
+                accountDao.updateAccountPasswordByUid(modifyAccountPasswordReq.getUid(), newPassword);
+                return true;
+            }
+        }
+        return false;
+    }
 
-//
-//    @Override
-//    public ServiceResponseMessage fetchAllAddressByUid(Integer uid) {
-//        if (uid == null || 0 == uid) {
-//            uid = HttpUtil.getUserUid();
-//        }
-//        AddressRsp addressRsp = new AddressRsp();
-//        List<AccountAddressPO> accountAddressList = addressDao.selectAccountAddressByUid(uid);
-//        if (null == accountAddressList) {
-//            return ServiceResponseMessage.createBySuccessCodeMessage("获取成功", addressRsp);
-//        }
-//        List<AddressRsp.Address> addressList = new ArrayList<>();
-//        for (AccountAddressPO accountAddressInfo : accountAddressList) {
-//            AddressRsp.Address address = new AddressRsp.Address();
-//            BeanUtils.copyProperties(accountAddressInfo, address);
-//            addressList.add(address);
-//        }
-//        addressRsp.setAddressList(addressList);
-//        return ServiceResponseMessage.createBySuccessCodeMessage("获取成功", addressRsp);
-//    }
-//
-//    @Override
-//    public ServiceResponseMessage createNewAddress(AddressReq addressReq) {
-//        if (null != addressReq) {
-//            AccountAddressPO accountAddressEntity = new AccountAddressPO();
-//            BeanUtils.copyProperties(addressReq, accountAddressEntity);
-//            accountAddressEntity.setUid(HttpUtil.getUserUid());
-//            addressDao.insertNewAddress(accountAddressEntity);
-//            return ServiceResponseMessage.createBySuccessCodeMessage("获取成功", "");
-//        }
-//        return ServiceResponseMessage.createByFailCodeMessage(ResultCodeEnum.BAD_REQUEST, "");
-//    }
-//
-//
-//    @Override
-//    public ServiceResponseMessage deleteAddressByIdAndUid(int addressId, Integer uid) {
-//        if (null != uid && uid != 0) {
-//            if (!uid.equals(HttpUtil.getUserUid())) {
-//                return ServiceResponseMessage.createByFailCodeMessage(ResultCodeEnum.UNAUTHORIZED, "权限限制");
-//            } else {
-//                uid = HttpUtil.getUserUid();
-//            }
-//        } else {
-//            uid = HttpUtil.getUserUid();
-//        }
-//        addressDao.deleteAddressByIdAndUid(addressId, uid);
-//        return ServiceResponseMessage.createBySuccessCodeMessage("删除成功", "");
-//    }
-//
-//    @Override
-//    public ServiceResponseMessage fetchAllProfile() {
-//        List<AccountPO> accountList = accountDao.selectAllAccountInfo();
-//        List<UserProfileRsp> userProfileRspList = new ArrayList<>();
-//        AllUserProfileRsp allUserProfileRsp = new AllUserProfileRsp();
-//        accountList.forEach(accountInfo -> {
-//            UserProfileRsp userProfileRsp = new UserProfileRsp();
-//            BeanUtils.copyProperties(accountInfo, userProfileRsp);
-//            userProfileRsp.setPassword(AESUtil.decryptAES(accountInfo.getSecretKey(),accountInfo.getPassword()));
-//            userProfileRsp.setCoins(accountBookService.fetchAccountRemainingPointsByUid(accountInfo.getUid()));
-//            userProfileRspList.add(userProfileRsp);
-//        });
-//        allUserProfileRsp.setUserProfileRspList(userProfileRspList);
-//        return ServiceResponseMessage.createBySuccessCodeMessage("获取成功", allUserProfileRsp);
-//    }
-//
-//    @Override
-//    public ServiceResponseMessage modifyUserIdentityPromotion(int uid, String role) {
-//        accountDao.updateProfileRoleByAccountUid(uid, role);
-//        return ServiceResponseMessage.createBySuccessCodeMessage("变更用户权限成功");
-//    }
-//
-//    @Override
-//    public ServiceResponseMessage deleteAccountProfileByUid(Integer uid) {
-//        accountDao.deleteAccountProfileByUid(uid);
-//        return ServiceResponseMessage.createBySuccessCodeMessage("删除用户账号信息");
-//    }
-//
-//    @Override
-//    public ServiceResponseMessage modifyAccountPassword(ModifyAccountPasswordReq modifyAccountPasswordReq) {
-//        if (ObjectUtil.isNotEmpty(modifyAccountPasswordReq.getUid())) {
-//            AccountPO accountInfo = accountDao.selectAccountInfoByUid(modifyAccountPasswordReq.getUid());
-//            if (null != accountInfo) {
-//                String newPassword = AESUtil.encryptAES(accountInfo.getSecretKey(), modifyAccountPasswordReq.getPassword());
-//                accountDao.updateAccountPasswordByUid(modifyAccountPasswordReq.getUid(), newPassword);
-//                return ServiceResponseMessage.createBySuccessCodeMessage("更新成功");
-//            }
-//        }
-//        return ServiceResponseMessage.createByFailCodeMessage(ResultCodeEnum.BAD_REQUEST, "更新失败");
-//    }
+    @Override
+    public boolean deleteAccountProfileByUid(Integer uid) {
+        int row = accountDao.deleteAccountProfileByUid(uid);
+        return row == BackendProfileConfig.ROW_NUMBER_1;
+    }
 }

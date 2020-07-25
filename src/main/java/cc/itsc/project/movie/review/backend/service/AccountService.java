@@ -1,5 +1,6 @@
 package cc.itsc.project.movie.review.backend.service;
 
+import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyAccountPasswordReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyProfileReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.SignInReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.SignUpReq;
@@ -43,70 +44,23 @@ public interface AccountService {
      * @return 用户Profile的查询结果
      */
     UserProfileRsp fetchUserProfileByUid(Integer uid);
-//
-//
-//    /**
-//     * 通过用户UID查询用户Profile信息
-//     *
-//     * @param uid 用户UID
-//     * @return 用户Profile的查询结果
-//     */
-//    UserProfileRsp fetchUserProfileByUid(Integer uid);
-//
-//    /**
-//     * 根据UIN查询用户地址信息
-//     *
-//     * @param uid 用户UIN
-//     * @return 用户地址信息
-//     */
-//    ServiceResponseMessage fetchAllAddressByUid(Integer uid);
-//
-//    /**
-//     * 新增自己的邮件地址
-//     *
-//     * @param addressReq 地址请求
-//     * @return 新增地址的处理结果
-//     */
-//    ServiceResponseMessage createNewAddress(AddressReq addressReq);
-//
-//    /**
-//     * 删除用户地址信息通过地址ID和用户Uid
-//     *
-//     * @param addressId 用户地址ID
-//     * @param uid 用户Uid
-//     * @return 删除地址信息的处理结果
-//     */
-//    ServiceResponseMessage deleteAddressByIdAndUid(int addressId, Integer uid);
-//
-//    /**
-//     * 查询所有的用户信息
-//     *
-//     * @return 查询到的用户信息的查询结果
-//     */
-//    ServiceResponseMessage fetchAllProfile();
-//
-//    /**
-//     * 修改用户权限
-//     *
-//     * @param uid 用户Uid
-//     * @param role 用户权限
-//     * @return 修改权限后的用户查询结果
-//     */
-//    ServiceResponseMessage modifyUserIdentityPromotion(int uid, String role);
-//
-//    /**
-//     * 删除商户账号
-//     *
-//     * @param uid 用户uid
-//     * @return 返回用户账号删除的处理状态
-//     */
-//    ServiceResponseMessage deleteAccountProfileByUid(Integer uid);
-//
-//    /**
-//     * 修改用户的
-//     *
-//     * @param modifyAccountPasswordReq 修改用户密码
-//     * @return 密码修改的处理结果
-//     */
-//    ServiceResponseMessage modifyAccountPassword(ModifyAccountPasswordReq modifyAccountPasswordReq);
+
+
+    /**
+     * 修改用户的
+     *
+     * @param modifyAccountPasswordReq 修改用户密码
+     * @return 密码修改的处理结果
+     */
+    boolean modifyAccountPassword(ModifyAccountPasswordReq modifyAccountPasswordReq);
+
+
+
+    /**
+     * 删除账号
+     *
+     * @param uid 用户uid
+     * @return 返回用户账号删除的处理状态
+     */
+    boolean deleteAccountProfileByUid(Integer uid);
 }
