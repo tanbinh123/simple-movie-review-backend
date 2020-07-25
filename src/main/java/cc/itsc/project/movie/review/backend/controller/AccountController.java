@@ -71,6 +71,7 @@ public class AccountController {
         }
     }
 
+    @ApiOperation("修改用户信息")
     @Security(roles = {RoleEnum.USER, RoleEnum.ADMIN})
     @PutMapping(value = "/modify", produces = MediaType.APPLICATION_JSON_VALUE)
     public ServiceResponseMessage<UserProfileRsp> modifyProfile(@RequestBody ModifyProfileReq modifyProfileReq) {
@@ -82,6 +83,7 @@ public class AccountController {
         }
     }
 
+    @ApiOperation("获取用户信息")
     @Security(roles = {RoleEnum.USER, RoleEnum.ADMIN})
     @GetMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
     public ServiceResponseMessage<UserProfileRsp> fetchProfileByUid(@RequestParam(value = "uid",required = false) Integer uid) {
