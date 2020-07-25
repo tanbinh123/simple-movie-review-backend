@@ -1,25 +1,40 @@
 package cc.itsc.project.movie.review.backend.pojo.vo.rsp;
 
+import cc.itsc.project.movie.review.backend.pojo.vo.HttpResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author Leo Wang
  * @version 1.0
- * @date 2020/2/23 16:03
  */
-public class UserProfileRsp {
+
+@ApiModel("用户Profile信息")
+public class UserProfileRsp implements HttpResponse {
+    @ApiModelProperty(value = "用户唯一标示Uid",example = "100000",required = true)
     private Integer uid;
-    private Long coins;
-    private String userName;
+    @ApiModelProperty(value = "用户登录账号",example = "Leonardo",required = true)
+    private String account;
+    @ApiModelProperty(value = "用户生日时间戳",example = "1595586247000",required = true)
     private Long birthday;
+    @ApiModelProperty(value = "用户昵称",example = "Leonardo Da",required = true)
     private String nikeName;
+    @ApiModelProperty(value = "用户性别",example = "F",required = true)
     private String gender;
+    @ApiModelProperty(value = "用户签名",example = "好雨知时节，当春乃发生。 随风潜入夜，润物细无声。",required = true)
     private String signature;
+    @ApiModelProperty(value = "用户头像",example = "https://w.wallhaven.cc/full/83/wallhaven-83ylm2.jpg",required = true)
     private String avatar;
+    @ApiModelProperty(value = "用户背景",example = "https://w.wallhaven.cc/full/ym/wallhaven-ympzzl.jpg",required = true)
     private String background;
+    @ApiModelProperty(value = "用户状态",example = "0",required = true)
     private Integer status;
+    @ApiModelProperty(value = "用户账号的创建时间",example = "1595586247000",required = true)
     private Long createTime;
+    @ApiModelProperty(value = "用户账号的更新时间",example = "1595586247000",required = true)
     private Long updateTime;
+    @ApiModelProperty(value = "用户的角色",example = "Admin",required = true)
     private String role;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -33,12 +48,12 @@ public class UserProfileRsp {
         this.uid = uid;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public Long getBirthday() {
@@ -113,12 +128,12 @@ public class UserProfileRsp {
         this.updateTime = updateTime;
     }
 
-    public Long getCoins() {
-        return coins;
+    public String getRole() {
+        return role;
     }
 
-    public void setCoins(Long coins) {
-        this.coins = coins;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getPassword() {
@@ -127,13 +142,5 @@ public class UserProfileRsp {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 }

@@ -66,7 +66,7 @@ public class ServiceResponseMessage<T extends HttpResponse> implements Serializa
     }
 
 
-    public static   <T extends HttpResponse> ServiceResponseMessage<T> createBySuccessCodeMessage(String msg, T data){
+    public static  <T extends HttpResponse> ServiceResponseMessage<T> createBySuccessCodeMessage(String msg, T data){
         ServiceResponseMessage<T> serviceResponseMessage = new ServiceResponseMessage<>();
         serviceResponseMessage.meta = new Meta(ResultCodeEnum.SUCCESS.getCode(),msg);
         serviceResponseMessage.data = data;
@@ -80,8 +80,8 @@ public class ServiceResponseMessage<T extends HttpResponse> implements Serializa
         return serviceResponseMessage;
     }
 
-    public static ServiceResponseMessage<DefaultHttpRsp> createByFailCodeMessage(ResultCodeEnum resultCode, String msg){
-        ServiceResponseMessage<DefaultHttpRsp> serviceResponseMessage = new ServiceResponseMessage<>();
+    public static <T extends HttpResponse>ServiceResponseMessage<T> createByFailCodeMessage(ResultCodeEnum resultCode, String msg){
+        ServiceResponseMessage<T> serviceResponseMessage = new ServiceResponseMessage<>();
         serviceResponseMessage.meta = new Meta(resultCode.getCode(),msg);
         return serviceResponseMessage;
     }

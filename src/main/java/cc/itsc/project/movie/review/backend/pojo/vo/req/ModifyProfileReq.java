@@ -3,7 +3,6 @@ package cc.itsc.project.movie.review.backend.pojo.vo.req;
 /**
  * @author Leonardo iWzl
  * @version 1.0
- * @date 2020/2/23 14:11
  */
 public class ModifyProfileReq {
     private Integer uid;

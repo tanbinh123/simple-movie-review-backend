@@ -48,7 +48,7 @@ public interface AccountDao {
             "#{accountInfo.nikeName},#{accountInfo.gender},#{accountInfo.avatar}," +
             "#{accountInfo.createTime},#{accountInfo.createTime}" +
             ")")
-    int insertNewLanaAccount(@Param("accountInfo") AccountPO accountInfo);
+    int insertAccountDetail(@Param("accountInfo") AccountPO accountInfo);
 
     /**
      * 更新用户头像

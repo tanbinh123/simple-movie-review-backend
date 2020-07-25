@@ -3,7 +3,9 @@ package cc.itsc.project.movie.review.backend.pojo.vo.req;
 import cc.itsc.project.movie.review.backend.pojo.vo.HttpRequset;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * @author Leonardo iWzl
@@ -11,37 +13,39 @@ import org.hibernate.validator.constraints.Length;
  */
 
 @ApiModel(description = "用户注册属性")
-public class RegisterReq implements HttpRequset {
+public class SignUpReq implements HttpRequset {
     @ApiModelProperty(value = "用户名(登录)",example = "Leonardo",required = true)
-    @Length(min = 4,max = 16,message = "用户名最小长度最小为4最大为16")
-    private String userName;
+    @Size(min = 4,max = 16,message = "用户名最小长度最小为4最大为16")
+    private String account;
 
     @ApiModelProperty(value = "用户密码",example = "12345678",required = true)
-    @Length(min = 8,max = 16,message = "密码最小长度最小为8最大为16")
+    @Size(min = 8,max = 16,message = "密码最小长度最小为8最大为16")
     private String password;
 
-    @ApiModelProperty(value = "昵称(显示)",example = "Leonardo",required = true)
-    @Length(min = 4,max = 16,message = "昵称最小长度最小为4最大为16")
+    @ApiModelProperty(value = "昵称(显示)",example = "Leonardo DiCaprio",required = true)
+    @Size(min = 4,max = 20,message = "昵称最小长度最小为4最大为20")
     private String nikeName;
 
-    @ApiModelProperty(value = "用户名",example = "Leonardo",required = true)
-    @Length(min = 4,max = 16,message = "用户名最小长度最小为4最大为16")
+    @ApiModelProperty(value = "用户性别",example = "M",required = true)
+    @Size(min = 1,max = 1,message = "用户性别为M｜F")
+    @Pattern(regexp = "[MF]",message ="用户性别为M或F")
     private String gender;
 
     @ApiModelProperty(value = "用户名",example = "Leonardo",required = true)
-    @Length(min = 4,max = 16,message = "用户名最小长度最小为4最大为16")
+    @Size(min = 4,max = 16,message = "用户名最小长度最小为4最大为16")
     private String avatar;
 
-    @ApiModelProperty(value = "用户名",example = "Leonardo",required = true)
-    @Length(min = 4,max = 16,message = "用户名最小长度最小为4最大为16")
+    @ApiModelProperty(value = "用户角色",example = "Admin/User",required = true)
+    @Size(min = 4,max = 5,message = "用户角色为Admin/User")
+    @Pattern(regexp = "Admin|User",message ="用户角色为Admin/User")
     private String role;
 
-    public String getUserName() {
-        return userName;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {

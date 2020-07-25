@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @version 1.0
  */
 @ApiModel(description = "用户登录返回")
-public class LoginRsp implements HttpResponse {
+public class SignRsp implements HttpResponse {
     @ApiModelProperty(value = "用户UID",example = "123456",required = true)
     private Integer uid;
     @ApiModelProperty(value = "用户访问密钥",example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.blKTsRigVUP1pobSoNU0C6hP1tTZsYXrnvLxI8XsNZ4",required = true)

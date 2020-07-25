@@ -5,7 +5,6 @@ package cc.itsc.project.movie.review.backend.pojo.po;
  *
  * @author Leonardo iWzl
  * @version 1.0
- * @date 2020/2/21 11:46
  */
 public class AccountPO {
     private Integer uid;

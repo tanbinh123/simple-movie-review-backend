@@ -1,7 +1,27 @@
 package cc.itsc.project.movie.review.backend.service.impl;
 
+import cc.itsc.project.movie.review.backend.config.BackendProfileConfig;
+import cc.itsc.project.movie.review.backend.dao.AccountDao;
+import cc.itsc.project.movie.review.backend.exception.AccountAlwaysExistException;
+import cc.itsc.project.movie.review.backend.exception.AccountNotFoundException;
+import cc.itsc.project.movie.review.backend.exception.AccountVerificationFailedException;
+import cc.itsc.project.movie.review.backend.pojo.enums.RoleEnum;
+import cc.itsc.project.movie.review.backend.pojo.po.AccountPO;
+import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyProfileReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.req.SignInReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.req.SignUpReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.SignRsp;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.UserProfileRsp;
 import cc.itsc.project.movie.review.backend.service.AccountService;
+import cc.itsc.project.movie.review.backend.utils.AESUtil;
+import cc.itsc.project.movie.review.backend.utils.HttpUtil;
+import cc.itsc.project.movie.review.backend.utils.JWTUtil;
+import cc.itsc.project.movie.review.backend.utils.ObjectUtil;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /**
  * @author Leonardo iWzl
@@ -10,103 +30,93 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-//    @Resource
-//    AccountDao accountDao;
-//    @Resource
-//    AddressDao addressDao;
-//    @Resource
-//    AccountBookService accountBookService;
-//
-//    @Override
-//    public ServiceResponseMessage login(LoginReq loginReq) {
-//        AccountPO accountInfo = accountDao.selectAccountInfoByUserName(loginReq.getUserName());
-//        if (null == accountInfo) {
-//            return ServiceResponseMessage.createByFailCodeMessage(ResultCodeEnum.ERROR_ACCOUNT, "账户不存在");
-//        }
-//        if (AESUtil.decryptAES(accountInfo.getSecretKey(),accountInfo.getPassword()).equals(loginReq.getPassword())) {
-//            LoginRsp loginRsp = new LoginRsp();
-//            loginRsp.setUid(accountInfo.getUid());
-//            loginRsp.setToken(JWTUtil.createToken(accountInfo.getUid(),
-//                    RoleEnum.getRole(accountInfo.getRole()), accountInfo.getPassword()));
-//            loginRsp.setRole(accountInfo.getRole());
-//            return ServiceResponseMessage.createBySuccessCodeMessage("登录成功", loginRsp);
-//        }
-//        return ServiceResponseMessage.createByFailCodeMessage(ResultCodeEnum.USERNAME_OR_PASSWORD_ERROR, "密码错误");
-//    }
-//
-//    @Override
-//    public ServiceResponseMessage signIn(RegisterReq registerReq) {
-//        AccountPO accountInfo = accountDao.selectAccountInfoByUserName(registerReq.getUserName());
-//        if (accountInfo != null) {
-//            return ServiceResponseMessage.createByFailCodeMessage(ResultCodeEnum.ACCOUNT_ALWAYS_EXISTS, "账号已存在");
-//        } else {
-//            accountInfo = new AccountPO();
-//            BeanUtils.copyProperties(registerReq, accountInfo);
-//            accountInfo.setCreateTime(System.currentTimeMillis());
-//            String secretKey = UUID.randomUUID().toString();
-//            accountInfo.setSecretKey(secretKey);
-//            accountInfo.setPassword(AESUtil.encryptAES(secretKey,registerReq.getPassword()));
-//            if (accountDao.insertNewLanaAccount(accountInfo) == 1) {
-//                return ServiceResponseMessage.createBySuccessCodeMessage("注册成功", "你好! " + accountInfo.getNikeName());
-//            } else {
-//                return ServiceResponseMessage.createByFailCodeMessage("注册失败");
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public ServiceResponseMessage modifyProfile(ModifyProfileReq modifyProfileReq) {
-//
-//        if (null == modifyProfileReq) {
-//            return ServiceResponseMessage.createByFailCodeMessage(ResultCodeEnum.PARAMETER_IS_EMPTY, "修改的对象为空");
-//        }
-//        Integer uid = null;
-//        if (ObjectUtil.isNotEmpty(modifyProfileReq.getUid())) {
-//            uid = modifyProfileReq.getUid();
-//        } else {
-//            uid = HttpUtil.getUserUid();
-//        }
-//        if (ObjectUtil.isNotEmpty(modifyProfileReq.getAvatar())) {
-//            accountDao.updateProfileAvatarByUid(modifyProfileReq.getAvatar(), uid);
-//        }
-//        if (ObjectUtil.isNotEmpty(modifyProfileReq.getNikeName())) {
-//            accountDao.updateProfileNikeNameByUid(modifyProfileReq.getNikeName(), uid);
-//        }
-//        if (ObjectUtil.isNotEmpty(modifyProfileReq.getSignature())) {
-//            accountDao.updateProfileSignatureByUid(modifyProfileReq.getSignature(), uid);
-//        }
-//        if (ObjectUtil.isNotEmpty(modifyProfileReq.getBirthday())) {
-//            accountDao.updateProfileBirthdayByUid(modifyProfileReq.getBirthday(), uid);
-//        }
-//        return ServiceResponseMessage.createBySuccessCodeMessage("修改成功", "");
-//    }
-//
-//    @Override
-//    public ServiceResponseMessage fetchProfileByUid(Integer uid) {
-//        UserProfileRsp userProfileRsp = fetchUserProfileByUid(uid);
-//        if (null == userProfileRsp) {
-//            return ServiceResponseMessage.createByFailCodeMessage(ResultCodeEnum.ERROR_ACCOUNT, "账户不存在");
-//        } else {
-//            return ServiceResponseMessage.createBySuccessCodeMessage("获取成功", userProfileRsp);
-//        }
-//    }
-//
-//    @Override
-//    public UserProfileRsp fetchUserProfileByUid(Integer uid) {
-//        if (uid == null || 0 == uid) {
-//            uid = HttpUtil.getUserUid();
-//        }
-//        AccountPO accountInfo = accountDao.selectAccountInfoByUid(uid);
-//        if (null == accountInfo) {
-//            return null;
-//        } else {
-//            UserProfileRsp userProfileRsp = new UserProfileRsp();
-//            BeanUtils.copyProperties(accountInfo, userProfileRsp);
-//            userProfileRsp.setPassword(null);
-//            userProfileRsp.setCoins(accountBookService.fetchAccountRemainingPointsByUid(uid));
-//            return userProfileRsp;
-//        }
-//    }
+    @Autowired
+    AccountDao accountDao;
+
+    @Override
+    public SignRsp signIn(SignInReq signInReq) {
+        AccountPO accountInfo = accountDao.selectAccountInfoByUserName(signInReq.getAccount());
+        if (null == accountInfo) {
+            throw new AccountNotFoundException();
+        }
+        boolean isVerificationSuccess = accountInfo.getRole().equalsIgnoreCase(signInReq.getRole())
+                && AESUtil.decryptAES(accountInfo.getSecretKey(),accountInfo.getPassword()).equals(signInReq.getPassword());
+        if(!isVerificationSuccess){
+            throw new AccountVerificationFailedException();
+        }else {
+            SignRsp signRsp = new SignRsp();
+            signRsp.setUid(accountInfo.getUid());
+            signRsp.setToken(JWTUtil.createToken(accountInfo.getUid(),
+                    RoleEnum.getRole(accountInfo.getRole()), accountInfo.getPassword()));
+            return signRsp;
+        }
+
+    }
+
+    @Override
+    public SignRsp signIn(SignUpReq signUpReq) {
+        AccountPO accountInfo = accountDao.selectAccountInfoByUserName(signUpReq.getAccount());
+        if (accountInfo != null) {
+            throw new AccountAlwaysExistException();
+        } else {
+            accountInfo = new AccountPO();
+            BeanUtils.copyProperties(signUpReq, accountInfo);
+            accountInfo.setCreateTime(System.currentTimeMillis());
+            String secretKey = UUID.randomUUID().toString();
+            accountInfo.setSecretKey(secretKey);
+            accountInfo.setPassword(AESUtil.encryptAES(secretKey, signUpReq.getPassword()));
+            if (accountDao.insertAccountDetail(accountInfo) == BackendProfileConfig.ROW_NUMBER_1) {
+                SignInReq signInReq = new SignInReq();
+                signInReq.setAccount(signUpReq.getAccount());
+                signInReq.setPassword(signUpReq.getPassword());
+                signInReq.setRole(signUpReq.getRole());
+               return signIn(signInReq);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    @Override
+    public UserProfileRsp modifyProfile(ModifyProfileReq modifyProfileReq) {
+        Integer uid = null;
+        if (ObjectUtil.isNotEmpty(modifyProfileReq.getUid())) {
+            uid = modifyProfileReq.getUid();
+        } else {
+            uid = HttpUtil.getUserUid();
+        }
+        if (ObjectUtil.isNotEmpty(modifyProfileReq.getAvatar())) {
+            accountDao.updateProfileAvatarByUid(modifyProfileReq.getAvatar(), uid);
+        }
+        if (ObjectUtil.isNotEmpty(modifyProfileReq.getNikeName())) {
+            accountDao.updateProfileNikeNameByUid(modifyProfileReq.getNikeName(), uid);
+        }
+        if (ObjectUtil.isNotEmpty(modifyProfileReq.getSignature())) {
+            accountDao.updateProfileSignatureByUid(modifyProfileReq.getSignature(), uid);
+        }
+        if (ObjectUtil.isNotEmpty(modifyProfileReq.getBirthday())) {
+            accountDao.updateProfileBirthdayByUid(modifyProfileReq.getBirthday(), uid);
+        }
+        return fetchUserProfileByUid(uid);
+    }
+
+    @Override
+    public UserProfileRsp fetchUserProfileByUid(Integer uid) {
+        if (uid == null || 0 == uid) {
+            uid = HttpUtil.getUserUid();
+        }
+        AccountPO accountInfo = accountDao.selectAccountInfoByUid(uid);
+        if (null == accountInfo) {
+            return null;
+        } else {
+            UserProfileRsp userProfileRsp = new UserProfileRsp();
+            BeanUtils.copyProperties(accountInfo, userProfileRsp);
+            userProfileRsp.setPassword(null);
+            return userProfileRsp;
+        }
+    }
+
+
 //
 //    @Override
 //    public ServiceResponseMessage fetchAllAddressByUid(Integer uid) {

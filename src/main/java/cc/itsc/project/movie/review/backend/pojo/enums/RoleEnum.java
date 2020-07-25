@@ -7,11 +7,11 @@ package cc.itsc.project.movie.review.backend.pojo.enums;
  **/
 public enum RoleEnum {
     //管理员
-    OSS("OSS"),
+    ADMIN("Admin"),
     //普通用户
-    USER("USER"),
+    USER("User"),
     //登录权限
-    ALL("LOGIN");
+    ALL("Login");
 
     private final String role;
 
