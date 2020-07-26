@@ -21,7 +21,7 @@ import java.util.UUID;
 public class CommonServiceImpl implements CommonService {
     Logger logger = LoggerFactory.getLogger(CommonServiceImpl.class);
 
-    @Value("${lana.upload.image.filepath}")
+    @Value("${leonardo.upload.image.filepath}")
     private String imageFilePath;
 
     @Override
