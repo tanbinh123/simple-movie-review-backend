@@ -14,6 +14,8 @@ import java.util.Base64;
  * AES 加密方法，是对称的密码算法(加密与解密的密钥一致)，这里使用最大的 256 位的密钥
  */
 public class AESUtil {
+
+    private final static String prng = "SHA1PRNG";
     /**
      * 获得一个 密钥长度为 256 位的 AES 密钥，
      *
@@ -21,7 +23,8 @@ public class AESUtil {
      */
     public static String getStrKeyAES(String key) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-        SecureRandom secureRandom = new SecureRandom(String.format("Itsc:Uid:%s", key).getBytes(StandardCharsets.UTF_8));
+        SecureRandom secureRandom =  SecureRandom.getInstance(prng);
+        secureRandom.setSeed(key.getBytes(StandardCharsets.UTF_8));
         keyGen.init(256, secureRandom);   // 这里可以是 128、192、256、越大越安全
         SecretKey secretKey = keyGen.generateKey();
         return Base64.getEncoder().encodeToString(secretKey.getEncoded());

@@ -4,6 +4,7 @@ import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyAccountPasswordReq
 import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyProfileReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.SignInReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.SignUpReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.PageOfInfoListRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.SignRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.UserProfileRsp;
 
@@ -27,7 +28,7 @@ public interface AccountService {
      * @param signUpReq 注册需要的信息接口
      * @return 注册的登录结果
      */
-    SignRsp signIn(SignUpReq signUpReq);
+    SignRsp signUp(SignUpReq signUpReq);
 
     /**
      * 修改用户Profile信息的结构
@@ -54,8 +55,6 @@ public interface AccountService {
      */
     boolean modifyAccountPassword(ModifyAccountPasswordReq modifyAccountPasswordReq);
 
-
-
     /**
      * 删除账号
      *
@@ -63,4 +62,13 @@ public interface AccountService {
      * @return 返回用户账号删除的处理状态
      */
     boolean deleteAccountProfileByUid(Integer uid);
+
+    /**
+     *  分页获取所有的用户信息
+     *
+     * @param pageSize 分页大小
+     * @param pageNo 页码数字
+     * @return 查询到的分页数据结果
+     */
+    PageOfInfoListRsp<UserProfileRsp> fetchPageOfUsersProfile(Integer pageSize, Integer pageNo);
 }

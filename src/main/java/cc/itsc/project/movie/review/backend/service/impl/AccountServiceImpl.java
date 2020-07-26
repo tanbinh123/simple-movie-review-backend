@@ -11,6 +11,7 @@ import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyAccountPasswordReq
 import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyProfileReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.SignInReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.SignUpReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.PageOfInfoListRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.SignRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.UserProfileRsp;
 import cc.itsc.project.movie.review.backend.service.AccountService;
@@ -18,10 +19,13 @@ import cc.itsc.project.movie.review.backend.utils.AESUtil;
 import cc.itsc.project.movie.review.backend.utils.HttpUtil;
 import cc.itsc.project.movie.review.backend.utils.JWTUtil;
 import cc.itsc.project.movie.review.backend.utils.ObjectUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author Leonardo iWzl
@@ -38,7 +42,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public SignRsp signIn(SignInReq signInReq) {
-        AccountPO accountInfo = accountDao.selectAccountInfoByUserName(signInReq.getAccount());
+        AccountPO accountInfo = accountDao.selectAccountInfoByAccount(signInReq.getAccount());
         if (null == accountInfo) {
             throw new AccountNotFoundException();
         }
@@ -57,8 +61,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public SignRsp signIn(SignUpReq signUpReq) {
-        AccountPO accountInfo = accountDao.selectAccountInfoByUserName(signUpReq.getAccount());
+    public SignRsp signUp(SignUpReq signUpReq) {
+        AccountPO accountInfo = accountDao.selectAccountInfoByAccount(signUpReq.getAccount());
         if (accountInfo != null) {
             throw new AccountAlwaysExistException();
         } else {
@@ -88,19 +92,16 @@ public class AccountServiceImpl implements AccountService {
         } else {
             uid = HttpUtil.getUserUid();
         }
-        if (ObjectUtil.isNotEmpty(modifyProfileReq.getAvatar())) {
-            accountDao.updateProfileAvatarByUid(modifyProfileReq.getAvatar(), uid);
+
+        AccountPO accountInfo = new AccountPO();
+        BeanUtils.copyProperties(modifyProfileReq, accountInfo);
+        accountInfo.setUid(uid);
+        accountInfo.setUpdateTime(System.currentTimeMillis());
+        if(accountDao.updateProfileAccountByUid(accountInfo) == BackendProfileConfig.ROW_NUMBER_1){
+            return fetchUserProfileByUid(uid);
+        }else {
+            return null;
         }
-        if (ObjectUtil.isNotEmpty(modifyProfileReq.getNikeName())) {
-            accountDao.updateProfileNikeNameByUid(modifyProfileReq.getNikeName(), uid);
-        }
-        if (ObjectUtil.isNotEmpty(modifyProfileReq.getSignature())) {
-            accountDao.updateProfileSignatureByUid(modifyProfileReq.getSignature(), uid);
-        }
-        if (ObjectUtil.isNotEmpty(modifyProfileReq.getBirthday())) {
-            accountDao.updateProfileBirthdayByUid(modifyProfileReq.getBirthday(), uid);
-        }
-        return fetchUserProfileByUid(uid);
     }
 
     @Override
@@ -121,8 +122,17 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean modifyAccountPassword(ModifyAccountPasswordReq modifyAccountPasswordReq) {
+        boolean checkPassword = HttpUtil.getRole() == RoleEnum.USER;
+        if(checkPassword){
+            modifyAccountPasswordReq.setUid(HttpUtil.getUserUid());
+        }
         if (ObjectUtil.isNotEmpty(modifyAccountPasswordReq.getUid())) {
             AccountPO accountInfo = accountDao.selectAccountInfoByUid(modifyAccountPasswordReq.getUid());
+            if(checkPassword){
+                if(!AESUtil.decryptAES(accountInfo.getSecretKey(),accountInfo.getPassword()).equals(modifyAccountPasswordReq.getOldPassword())){
+                    throw new AccountVerificationFailedException();
+                }
+            }
             if (null != accountInfo) {
                 String newPassword = AESUtil.encryptAES(accountInfo.getSecretKey(), modifyAccountPasswordReq.getPassword());
                 accountDao.updateAccountPasswordByUid(modifyAccountPasswordReq.getUid(), newPassword);
@@ -136,5 +146,19 @@ public class AccountServiceImpl implements AccountService {
     public boolean deleteAccountProfileByUid(Integer uid) {
         int row = accountDao.deleteAccountProfileByUid(uid);
         return row == BackendProfileConfig.ROW_NUMBER_1;
+    }
+
+    @Override
+    public  PageOfInfoListRsp<UserProfileRsp> fetchPageOfUsersProfile(Integer pageSize, Integer pageNo) {
+        PageHelper.startPage(pageNo,pageSize);
+        PageInfo<AccountPO> pageOfAccount = new PageInfo<>(accountDao.selectAllAccountInfo());
+        PageOfInfoListRsp<UserProfileRsp> pageOfUserProfileRsp = new PageOfInfoListRsp<>();
+        pageOfUserProfileRsp.setDataList(pageOfAccount.getList().stream().map((accountInfo->{
+            UserProfileRsp userProfileRsp = new UserProfileRsp();
+            BeanUtils.copyProperties(accountInfo, userProfileRsp);
+            return userProfileRsp;
+        })).collect(Collectors.toList()));
+        BeanUtils.copyProperties(pageOfAccount, pageOfUserProfileRsp);
+        return pageOfUserProfileRsp;
     }
 }

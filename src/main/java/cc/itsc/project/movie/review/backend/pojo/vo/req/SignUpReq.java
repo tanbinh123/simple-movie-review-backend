@@ -31,7 +31,7 @@ public class SignUpReq implements HttpRequset {
     @Pattern(regexp = "[MF]",message ="用户性别为M或F")
     private String gender;
 
-    @ApiModelProperty(value = "用户名",example = "Leonardo",required = true)
+    @ApiModelProperty(value = "头像",example = "https://w.wallhaven.cc/full/39/wallhaven-39pw6v.jpg",required = true)
     @Size(min = 4,max = 16,message = "用户名最小长度最小为4最大为16")
     private String avatar;
 

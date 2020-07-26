@@ -9,7 +9,7 @@ package cc.itsc.project.movie.review.backend.pojo.po;
 public class AccountPO {
     private Integer uid;
     private String role;
-    private String userName;
+    private String account;
     private String secretKey;
     private String password;
     private Long birthday;
@@ -38,12 +38,12 @@ public class AccountPO {
         this.role = role;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {
@@ -139,7 +139,7 @@ public class AccountPO {
         return "AccountPO{" +
                 "uid=" + uid +
                 ", role='" + role + '\'' +
-                ", userName='" + userName + '\'' +
+                ", account='" + account + '\'' +
                 ", password='" + password + '\'' +
                 ", birthday=" + birthday +
                 ", nikeName='" + nikeName + '\'' +

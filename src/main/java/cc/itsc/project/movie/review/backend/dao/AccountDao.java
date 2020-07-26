@@ -19,17 +19,15 @@ public interface AccountDao {
      * @param uid 用户UID
      * @return 查询到的用户信息
      */
-    @Select("select * from lana_account where uid = #{uid}")
     AccountPO selectAccountInfoByUid(@Param("uid") Integer uid);
 
     /**
      * 根据用户唯一账户名登录和密码查询用户
      *
-     * @param userName 用户唯一账户
+     * @param account 用户唯一账户
      * @return 查询到的用户信息
      */
-    @Select("select * from lana_account where user_name = #{userName} limit 1")
-    AccountPO selectAccountInfoByUserName(@Param("userName") String userName);
+    AccountPO selectAccountInfoByAccount(@Param("account") String account);
 
     /**
      * 插入新的accountInfo
@@ -37,17 +35,6 @@ public interface AccountDao {
      * @param accountInfo 用户Account Info
      * @return 受影响的行数
      */
-    @Insert("insert into " +
-            "lana_account " +
-            "(role,user_name,secret_key,password," +
-            " nike_name,gender,avatar," +
-            " create_time,update_time) " +
-            "values" +
-            "(" +
-            "#{accountInfo.role},#{accountInfo.userName},#{accountInfo.secretKey},#{accountInfo.password}," +
-            "#{accountInfo.nikeName},#{accountInfo.gender},#{accountInfo.avatar}," +
-            "#{accountInfo.createTime},#{accountInfo.createTime}" +
-            ")")
     int insertAccountDetail(@Param("accountInfo") AccountPO accountInfo);
 
     /**
@@ -93,7 +80,6 @@ public interface AccountDao {
      *
      * @return 查询到的Account信息结果
      */
-    @Select("select * from lana_account")
     List<AccountPO> selectAllAccountInfo();
 
     /**
@@ -110,7 +96,6 @@ public interface AccountDao {
      *
      * @param uid 用户uid
      */
-    @Delete("delete from lana_account where uid = #{uid} limit 1")
     int deleteAccountProfileByUid(@Param("uid") Integer uid);
 
     /**
@@ -119,6 +104,13 @@ public interface AccountDao {
      * @param uid      用户uid
      * @param password 用户密码
      */
-    @Update("update lana_account set password = #{password} where uid =  #{uid}")
     void updateAccountPasswordByUid(@Param("uid") Integer uid, @Param("password") String password);
+
+    /**
+     * 更新用户状态信息
+     *
+     * @param accountInfo 用户信息
+     * @return 查询完成的处理结果
+     */
+    int updateProfileAccountByUid(@Param("accountInfo") AccountPO accountInfo);
 }
