@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebAppConfig implements WebMvcConfigurer {
 
-    @Value("${lana.upload.image.filepath}")
+    @Value("${leonardo.upload.image.filepath}")
     private String imageFilePath;
 
     @Override
