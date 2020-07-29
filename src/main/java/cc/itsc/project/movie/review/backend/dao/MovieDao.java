@@ -43,4 +43,6 @@ public interface MovieDao {
     int updateByPrimaryKey(MoviePO record);
 
     void deleteClassifyByMid(@Param("mid") Long mid);
+
+    List<MoviePO> selectMovieListName(@Param("name") String name);
 }

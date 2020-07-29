@@ -170,5 +170,12 @@
         delete from movie_classify where mid = #{mid}
     </delete>
 
+    <select id="selectMovieListName" resultMap="BaseResultMap">
+         select
+        <include refid="Base_Column_List" />
+        from movie
+        where name like concat('%',#{name},'%')
+    </select>
+
 
 </mapper>

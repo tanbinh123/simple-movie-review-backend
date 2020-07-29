@@ -1,6 +1,9 @@
 package cc.itsc.project.movie.review.backend.service;
 
+import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyMovieReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieDetailReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MovieDetailRsp;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.PageOfInfoListRsp;
 
 import java.util.List;
 
@@ -32,4 +35,21 @@ public interface MovieService {
      * @param mid 电影ID
      */
     void deleteMovieByMid(Long mid);
+
+    /**
+     * 修改详细信息
+     *
+     * @param modifyMovieReq 修改电影信息
+     */
+    void modifyMovieDetailByMid(ModifyMovieReq modifyMovieReq);
+
+    /**
+     * 通过电影名称和分页信息检索电影信息
+     *
+     * @param name 检索的电影的Key
+     * @param pageNo 页码数
+     * @param pageSize 每页的数量
+     * @return 查询出的电影结果
+     */
+    PageOfInfoListRsp<MovieDetailRsp> searchMovieDetailsByKeyWithPageInfo(String name, Integer pageNo, Integer pageSize);
 }
