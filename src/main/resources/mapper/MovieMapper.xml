@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cc.itsc.project.movie.review.backend.dao.MovieDao">
+
+
+    <insert id="insertMovieClassifyList">
+        insert into classify(classify) values
+        <foreach collection="classifyList" item="classify" separator=",">
+        ( #{classify} )
+        </foreach>
+    </insert>
+
+    <select id="selectAllMovieClassify" resultType="java.lang.String">
+        select classify from classify;
+    </select>
+</mapper>

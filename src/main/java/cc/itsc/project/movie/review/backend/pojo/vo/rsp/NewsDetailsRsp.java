@@ -5,7 +5,6 @@ import java.util.List;
 /**
  * @author Leonardo iWzl
  * @version 1.0
- * @date 2020/2/23 15:11
  */
 public class NewsDetailsRsp {
 

@@ -32,7 +32,7 @@ public class SignUpReq implements HttpRequset {
     private String gender;
 
     @ApiModelProperty(value = "头像",example = "https://w.wallhaven.cc/full/39/wallhaven-39pw6v.jpg",required = true)
-    @Size(min = 4,max = 16,message = "用户名最小长度最小为4最大为16")
+    @Size(min = 4,message = "用户头像不能为空")
     private String avatar;
 
     @ApiModelProperty(value = "用户角色",example = "Admin/User",required = true)

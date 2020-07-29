@@ -3,11 +3,17 @@ package cc.itsc.project.movie.review.backend.controller;
 import cc.itsc.project.movie.review.backend.annotation.Security;
 import cc.itsc.project.movie.review.backend.pojo.enums.RoleEnum;
 import cc.itsc.project.movie.review.backend.pojo.vo.common.ServiceResponseMessage;
+import cc.itsc.project.movie.review.backend.pojo.vo.req.ClassifiesReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.ClassifiesRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.DefaultHttpRsp;
+import cc.itsc.project.movie.review.backend.service.MovieService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Leonardo iWzl
@@ -18,6 +24,29 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/movie")
 public class MovieController {
+    private final
+    MovieService movieService;
+
+    public MovieController(MovieService movieService) {
+        this.movieService = movieService;
+    }
+
+    @ApiOperation("# 新增电影分类")
+    @Security(roles = RoleEnum.ADMIN)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ServiceResponseMessage<DefaultHttpRsp> insertNewMovieClassifyDetail(@RequestBody @Validated ClassifiesReq classifiesReq) {
+        movieService.insertNewMovieClassifyDetail(classifiesReq.getClassifyList());
+        return ServiceResponseMessage.createBySuccessCodeMessage();
+    }
+    @ApiOperation("#* 拉取电影分类")
+    @Security(roles = RoleEnum.ALL)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ServiceResponseMessage<ClassifiesRsp> searchAllMovieClassify() {
+        List<String> classifyList = movieService.searchAllMovieClassify();
+        ClassifiesRsp classifiesRsp = new ClassifiesRsp();
+        classifiesRsp.setClassifyList(classifyList);
+        return ServiceResponseMessage.createBySuccessCodeMessage(classifiesRsp);
+    }
 
     @ApiOperation("#* 新增电影信息")
     @Security(roles = RoleEnum.ADMIN)

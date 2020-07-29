@@ -3,7 +3,6 @@ package cc.itsc.project.movie.review.backend.pojo.vo.req;
 /**
  * @author Leonardo iWzl
  * @version 1.0
- * @date 2020/3/21 15:54
  */
 public class ModifyNewsDetailReq {
     private int newsId;
