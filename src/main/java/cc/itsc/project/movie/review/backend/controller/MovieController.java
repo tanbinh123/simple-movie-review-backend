@@ -33,14 +33,14 @@ public class MovieController {
 
     @ApiOperation("# 新增电影分类")
     @Security(roles = RoleEnum.ADMIN)
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/classify",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ServiceResponseMessage<DefaultHttpRsp> insertNewMovieClassifyDetail(@RequestBody @Validated ClassifiesReq classifiesReq) {
         movieService.insertNewMovieClassifyDetail(classifiesReq.getClassifyList());
         return ServiceResponseMessage.createBySuccessCodeMessage();
     }
     @ApiOperation("#* 拉取电影分类")
     @Security(roles = RoleEnum.ALL)
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/classify/all",produces = MediaType.APPLICATION_JSON_VALUE)
     public ServiceResponseMessage<ClassifiesRsp> searchAllMovieClassify() {
         List<String> classifyList = movieService.searchAllMovieClassify();
         ClassifiesRsp classifiesRsp = new ClassifiesRsp();
