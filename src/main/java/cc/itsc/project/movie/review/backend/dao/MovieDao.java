@@ -22,6 +22,14 @@ public interface MovieDao {
      */
     List<String> selectAllMovieClassify();
 
+    /**
+     * 绑定电影分类
+     *
+     * @param mid          电影ID
+     * @param classifyList 电影分类
+     */
+    void insertBindClassifyList(@Param("mid") Long mid, @Param("classifyList") List<String> classifyList);
+
     int deleteByPrimaryKey(Long mid);
 
     int insert(MoviePO record);
@@ -33,4 +41,6 @@ public interface MovieDao {
     int updateByPrimaryKeySelective(MoviePO record);
 
     int updateByPrimaryKey(MoviePO record);
+
+    void deleteClassifyByMid(@Param("mid") Long mid);
 }

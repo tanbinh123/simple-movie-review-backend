@@ -4,6 +4,7 @@ import cc.itsc.project.movie.review.backend.annotation.Security;
 import cc.itsc.project.movie.review.backend.pojo.enums.RoleEnum;
 import cc.itsc.project.movie.review.backend.pojo.vo.common.ServiceResponseMessage;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.ClassifiesReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieDetailReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.ClassifiesRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.DefaultHttpRsp;
 import cc.itsc.project.movie.review.backend.service.MovieService;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 
 /**
@@ -51,7 +53,8 @@ public class MovieController {
     @ApiOperation("#* 新增电影信息")
     @Security(roles = RoleEnum.ADMIN)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ServiceResponseMessage<DefaultHttpRsp> insertNewMovieDetail() {
+    public ServiceResponseMessage<DefaultHttpRsp> insertNewMovieDetail(@RequestBody @Validated MovieDetailReq movieDetailReq) {
+        movieService.insertNewMovieDetail(movieDetailReq);
         return ServiceResponseMessage.createBySuccessCodeMessage();
     }
 
@@ -65,7 +68,8 @@ public class MovieController {
     @ApiOperation("#* 删除电影信息")
     @Security(roles = RoleEnum.ADMIN)
     @DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ServiceResponseMessage<DefaultHttpRsp> deleteMovieByMid() {
+    public ServiceResponseMessage<DefaultHttpRsp> deleteMovieByMid(@Min (value = 1) @Validated Long mid) {
+        movieService.deleteMovieByMid(mid);
         return ServiceResponseMessage.createBySuccessCodeMessage();
     }
 

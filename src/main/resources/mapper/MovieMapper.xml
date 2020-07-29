@@ -159,4 +159,16 @@
         `status` = #{status,jdbcType=INTEGER}
         where mid = #{mid,jdbcType=BIGINT}
     </update>
+
+    <insert id="insertBindClassifyList">
+        insert into movie_classify(mid, classify) values <foreach collection="classifyList" separator="," item="classify">
+            (#{mid},#{classify})
+        </foreach>
+    </insert>
+
+    <delete id="deleteClassifyByMid">
+        delete from movie_classify where mid = #{mid}
+    </delete>
+
+
 </mapper>
