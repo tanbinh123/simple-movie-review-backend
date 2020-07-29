@@ -1,5 +1,6 @@
 package cc.itsc.project.movie.review.backend.dao;
 
+import cc.itsc.project.movie.review.backend.pojo.po.MoviePO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -20,4 +21,16 @@ public interface MovieDao {
      * @return 拉取到的所有的分类信息
      */
     List<String> selectAllMovieClassify();
+
+    int deleteByPrimaryKey(Long mid);
+
+    int insert(MoviePO record);
+
+    int insertSelective(MoviePO record);
+
+    MoviePO selectByPrimaryKey(Long mid);
+
+    int updateByPrimaryKeySelective(MoviePO record);
+
+    int updateByPrimaryKey(MoviePO record);
 }
