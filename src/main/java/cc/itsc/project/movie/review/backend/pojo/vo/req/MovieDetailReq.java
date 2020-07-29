@@ -4,6 +4,7 @@ import cc.itsc.project.movie.review.backend.pojo.vo.HttpRequset;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -49,7 +50,7 @@ public class MovieDetailReq implements HttpRequset {
      * 时长(min)
      */
     @ApiModelProperty(value = "时长(min)")
-    @NotBlank(message = "时长(min)不能为空")
+    @Min(value = 1,message = "时长(min)不能为空")
     private Integer duration;
 
     /**
