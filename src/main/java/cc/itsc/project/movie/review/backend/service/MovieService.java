@@ -52,4 +52,14 @@ public interface MovieService {
      * @return 查询出的电影结果
      */
     PageOfInfoListRsp<MovieDetailRsp> searchMovieDetailsByKeyWithPageInfo(String name, Integer pageNo, Integer pageSize);
+
+    /**
+     * 分页按分类获取电影的详细信息
+     *
+     * @param classify 分类信息
+     * @param pageNo 页面数
+     * @param pageSize 分页的数据大小
+     * @return 成功的查询结果
+     */
+    PageOfInfoListRsp<MovieDetailRsp> searchMovieDetailsByClassifyWithPageInfo(String classify, Integer pageNo, Integer pageSize);
 }

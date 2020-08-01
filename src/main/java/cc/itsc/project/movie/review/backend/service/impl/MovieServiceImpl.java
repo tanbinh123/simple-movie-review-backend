@@ -12,6 +12,7 @@ import cc.itsc.project.movie.review.backend.pojo.vo.rsp.UserProfileRsp;
 import cc.itsc.project.movie.review.backend.service.MovieService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +72,13 @@ public class MovieServiceImpl implements MovieService {
         return buildPageOfMovieDetailRspByPageHelperInfo(pageOfMovie);
     }
 
+
+    @Override
+    public PageOfInfoListRsp<MovieDetailRsp> searchMovieDetailsByClassifyWithPageInfo(String classify, Integer pageNo, Integer pageSize) {
+        PageHelper.startPage(pageNo,pageSize);
+        PageInfo<MoviePO> pageOfMovieMidWithClassify = new PageInfo<>(movieDao.selectMovieListByClassify(classify));
+        return buildPageOfMovieDetailRspByPageHelperInfo(pageOfMovieMidWithClassify);
+    }
 
 
     private PageOfInfoListRsp<MovieDetailRsp> buildPageOfMovieDetailRspByPageHelperInfo(PageInfo<MoviePO>  pageOfMovie){

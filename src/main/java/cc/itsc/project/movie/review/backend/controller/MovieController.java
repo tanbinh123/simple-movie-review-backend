@@ -99,8 +99,12 @@ public class MovieController {
     @ApiOperation(value = "#* 分类检索电影基本信息",notes = "不包括电影影评")
     @Security(roles = RoleEnum.ALL)
     @GetMapping(value = "/classify",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ServiceResponseMessage<DefaultHttpRsp> searchMovieDetailsByClassify(String classify) {
-        return ServiceResponseMessage.createBySuccessCodeMessage();
+    public ServiceResponseMessage<PageOfInfoListRsp<MovieDetailRsp>> searchMovieDetailsByClassify(
+            String classify,
+            @Min(value = 1,message = "页码数最少为1")@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+            @Min (value = 1,message = "每页数量最小为1")@RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
+        PageOfInfoListRsp<MovieDetailRsp> pageOfMovieDetailList = movieService.searchMovieDetailsByClassifyWithPageInfo(classify,pageNo,pageSize);
+        return ServiceResponseMessage.createBySuccessCodeMessage(pageOfMovieDetailList);
     }
 
     @ApiOperation(value = "#* 检索电影详细信息ByMid",notes = "包括电影影评")

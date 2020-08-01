@@ -45,4 +45,12 @@ public interface MovieDao {
     void deleteClassifyByMid(@Param("mid") Long mid);
 
     List<MoviePO> selectMovieListName(@Param("name") String name);
+
+    /**
+     * 查询电影详细信息通过电影分类信息
+     *
+     * @param classify 电影的分类信息
+     * @return 查询到的电影属性信息
+     */
+    List<MoviePO> selectMovieListByClassify(String classify);
 }

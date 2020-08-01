@@ -177,5 +177,12 @@
         where name like concat('%',#{name},'%')
     </select>
 
+    <select id="selectMovieListByClassify" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from movie where mid in
+        (select mid from movie_classify where classify = #{classify})
+    </select>
+
 
 </mapper>
