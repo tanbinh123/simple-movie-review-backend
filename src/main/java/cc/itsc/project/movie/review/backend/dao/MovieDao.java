@@ -53,4 +53,12 @@ public interface MovieDao {
      * @return 查询到的电影属性信息
      */
     List<MoviePO> selectMovieListByClassify(String classify);
+
+    /**
+     * 查询电影分类信息通过电影ID
+     *
+     * @param mid 电影唯一ID
+     * @return 查询到的电影ID
+     */
+    List<String> selectMovieClassifyByMid(@Param("mid") Long mid);
 }
