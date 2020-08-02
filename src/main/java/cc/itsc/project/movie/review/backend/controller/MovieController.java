@@ -89,7 +89,7 @@ public class MovieController {
     @Security(roles = RoleEnum.ALL)
     @GetMapping(value = "/name",produces = MediaType.APPLICATION_JSON_VALUE)
     public ServiceResponseMessage<PageOfInfoListRsp<MovieDetailRsp>> searchMovieDetailsByKeyWithPageInfo(
-            @NotBlank(message = "搜索的Name不能为空") @Validated String name,
+            @NotBlank(message = "搜索的Name不能为空") @Validated @RequestParam(value = "name") String name,
             @Min(value = 1,message = "页码数最少为1")@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
             @Min (value = 1,message = "每页数量最小为1")@RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
         PageOfInfoListRsp<MovieDetailRsp> pageOfMoviesList = movieService.searchMovieDetailsByKeyWithPageInfo(name,pageNo,pageSize);
@@ -100,7 +100,7 @@ public class MovieController {
     @Security(roles = RoleEnum.ALL)
     @GetMapping(value = "/classify",produces = MediaType.APPLICATION_JSON_VALUE)
     public ServiceResponseMessage<PageOfInfoListRsp<MovieDetailRsp>> searchMovieDetailsByClassify(
-            String classify,
+            @NotBlank(message = "搜索的classify不能为空") @Validated @RequestParam(value = "classify") String classify,
             @Min(value = 1,message = "页码数最少为1")@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
             @Min (value = 1,message = "每页数量最小为1")@RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
         PageOfInfoListRsp<MovieDetailRsp> pageOfMovieDetailList = movieService.searchMovieDetailsByClassifyWithPageInfo(classify,pageNo,pageSize);
