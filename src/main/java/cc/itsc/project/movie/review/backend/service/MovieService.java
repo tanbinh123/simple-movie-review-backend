@@ -2,6 +2,7 @@ package cc.itsc.project.movie.review.backend.service;
 
 import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyMovieReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieDetailReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieReviewReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MovieDetailRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.PageOfInfoListRsp;
 
@@ -62,4 +63,20 @@ public interface MovieService {
      * @return 成功的查询结果
      */
     PageOfInfoListRsp<MovieDetailRsp> searchMovieDetailsByClassifyWithPageInfo(String classify, Integer pageNo, Integer pageSize);
+
+    /**
+     * 插入电影的影评信息
+     *
+     * @param movieReviewReq 电影的详细信息
+     * @return 电影的详细信息
+     */
+    MovieDetailRsp insertNewMovieReview(MovieReviewReq movieReviewReq);
+
+    /**
+     *  根据电影唯一标示符号 拉取电影详细信息
+     *
+     * @param mid 电影的MID
+     * @return 电影的详细详细拉取结果
+     */
+    MovieDetailRsp fetchMovieDetailsByMid(Long mid);
 }

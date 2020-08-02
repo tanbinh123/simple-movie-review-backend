@@ -2,12 +2,16 @@ package cc.itsc.project.movie.review.backend.service.impl;
 
 import cc.itsc.project.movie.review.backend.config.BackendProfileConfig;
 import cc.itsc.project.movie.review.backend.dao.MovieDao;
+import cc.itsc.project.movie.review.backend.dao.MovieReviewDao;
 import cc.itsc.project.movie.review.backend.pojo.po.MoviePO;
+import cc.itsc.project.movie.review.backend.pojo.po.MovieReviewPO;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyMovieReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieDetailReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieReviewReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MovieDetailRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.PageOfInfoListRsp;
 import cc.itsc.project.movie.review.backend.service.MovieService;
+import cc.itsc.project.movie.review.backend.utils.HttpUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +26,8 @@ import java.util.stream.Collectors;
 public class MovieServiceImpl implements MovieService {
     @Resource
     MovieDao movieDao;
+    @Resource
+    MovieReviewDao movieReviewDao;
 
     @Override
     public void insertNewMovieClassifyDetail(List<String> classifyList) {
@@ -77,6 +83,25 @@ public class MovieServiceImpl implements MovieService {
         return buildPageOfMovieDetailRspByPageHelperInfo(pageOfMovieMidWithClassify);
     }
 
+
+    @Override
+    public MovieDetailRsp fetchMovieDetailsByMid(Long mid) {
+        MoviePO movieInfo = movieDao.selectByPrimaryKey(mid);
+        MovieDetailRsp movieDetailRsp = new MovieDetailRsp();
+        BeanUtils.copyProperties(movieInfo, movieDetailRsp);
+        List<MovieReviewPO> movieReviewList = movieReviewDao.selectReviewListByMid(mid);
+        return null;
+    }
+
+    @Override
+    public MovieDetailRsp insertNewMovieReview(MovieReviewReq movieReviewReq) {
+        MovieReviewPO movieReview = new MovieReviewPO();
+        BeanUtils.copyProperties(movieReviewReq,movieReview);
+        movieReview.setUid(HttpUtil.getUserUid());
+        movieReview.setReviewTime(System.currentTimeMillis());
+        movieReviewDao.insertSelective(movieReview);
+        return fetchMovieDetailsByMid(movieReviewReq.getMid());
+    }
 
     private PageOfInfoListRsp<MovieDetailRsp> buildPageOfMovieDetailRspByPageHelperInfo(PageInfo<MoviePO>  pageOfMovie){
         PageOfInfoListRsp<MovieDetailRsp> pageOfMoviesRsp = new PageOfInfoListRsp<>();

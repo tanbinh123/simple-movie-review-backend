@@ -6,6 +6,7 @@ import cc.itsc.project.movie.review.backend.pojo.vo.common.ServiceResponseMessag
 import cc.itsc.project.movie.review.backend.pojo.vo.req.ClassifiesReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyMovieReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieDetailReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieReviewReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.ClassifiesRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.DefaultHttpRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MovieDetailRsp;
@@ -110,15 +111,17 @@ public class MovieController {
     @ApiOperation(value = "#* 检索电影详细信息ByMid",notes = "包括电影影评")
     @Security(roles = RoleEnum.ALL)
     @GetMapping(value = "/mid",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ServiceResponseMessage<DefaultHttpRsp> fetchMovieDetailsByMid(Integer mid) {
-        return ServiceResponseMessage.createBySuccessCodeMessage();
+    public ServiceResponseMessage<MovieDetailRsp> fetchMovieDetailsByMid(@Min(value = 1,message = "电影MID不能为空") @RequestParam(value = "mid") Long mid) {
+        MovieDetailRsp movieDetailRsp = movieService.fetchMovieDetailsByMid(mid);
+        return ServiceResponseMessage.createBySuccessCodeMessage(movieDetailRsp);
     }
 
 
-    @ApiOperation(value = "#* 发起影评",notes = "包括电影影评")
+    @ApiOperation(value = "#* 发起影评",notes = "电影信息包括电影影评")
     @Security(roles = RoleEnum.USER)
     @PostMapping(value = "/review",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ServiceResponseMessage<DefaultHttpRsp> reviewMovieWithMid(Integer mid) {
-        return ServiceResponseMessage.createBySuccessCodeMessage();
+    public ServiceResponseMessage<MovieDetailRsp> reviewMovieWithMid(@RequestBody @Validated MovieReviewReq movieReviewReq) {
+        MovieDetailRsp movieDetailRsp = movieService.insertNewMovieReview(movieReviewReq);
+        return ServiceResponseMessage.createBySuccessCodeMessage(movieDetailRsp);
     }
 }
