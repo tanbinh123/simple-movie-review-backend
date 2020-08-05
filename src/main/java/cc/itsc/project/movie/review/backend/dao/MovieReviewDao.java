@@ -60,7 +60,7 @@ public interface MovieReviewDao {
      * 查询电影的评论信息
      *
      * @param mid 电影的MID
-     * @return
+     * @return 电影影评信息
      */
     List<MovieReviewPO> selectReviewListByMid(@Param("mid") Long mid);
 }

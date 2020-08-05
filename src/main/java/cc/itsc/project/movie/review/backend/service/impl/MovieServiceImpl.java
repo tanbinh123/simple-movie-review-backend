@@ -9,7 +9,9 @@ import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyMovieReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieDetailReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieReviewReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MovieDetailRsp;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MovieReviewDetailRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.PageOfInfoListRsp;
+import cc.itsc.project.movie.review.backend.service.AccountService;
 import cc.itsc.project.movie.review.backend.service.MovieService;
 import cc.itsc.project.movie.review.backend.utils.HttpUtil;
 import com.github.pagehelper.PageHelper;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +31,8 @@ public class MovieServiceImpl implements MovieService {
     MovieDao movieDao;
     @Resource
     MovieReviewDao movieReviewDao;
+    @Resource
+    AccountService accountService;
 
     @Override
     public void insertNewMovieClassifyDetail(List<String> classifyList) {
@@ -90,7 +95,15 @@ public class MovieServiceImpl implements MovieService {
         MovieDetailRsp movieDetailRsp = new MovieDetailRsp();
         BeanUtils.copyProperties(movieInfo, movieDetailRsp);
         List<MovieReviewPO> movieReviewList = movieReviewDao.selectReviewListByMid(mid);
-        return null;
+        List<MovieReviewDetailRsp> movieReviewDetailRspList = new ArrayList<>();
+        for (MovieReviewPO movieReview : movieReviewList) {
+            MovieReviewDetailRsp movieReviewDetailRsp = new MovieReviewDetailRsp();
+            BeanUtils.copyProperties(movieReview, movieReviewDetailRsp);
+            movieReviewDetailRsp.setUserProfileRsp(accountService.fetchUserProfileByUid(movieReview.getUid()));
+            movieReviewDetailRspList.add(movieReviewDetailRsp);
+        }
+        movieDetailRsp.setMovieReviewDetailRspList(movieReviewDetailRspList);
+        return movieDetailRsp;
     }
 
     @Override

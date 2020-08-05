@@ -103,4 +103,8 @@
       `status` = #{status,jdbcType=INTEGER}
     where rid = #{rid,jdbcType=BIGINT}
   </update>
+
+  <select id="selectReviewListByMid" resultMap="BaseResultMap">
+    select * from movie_review where mid = #{mid} order by review_time desc
+  </select>
 </mapper>
