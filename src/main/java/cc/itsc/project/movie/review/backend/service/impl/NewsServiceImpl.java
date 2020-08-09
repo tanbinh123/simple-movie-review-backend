@@ -47,7 +47,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public void deleteMomentsByNid(Long nid) {
+    public void deleteNewsByNid(Long nid) {
         newsDao.deleteByPrimaryKey(nid);
     }
 }

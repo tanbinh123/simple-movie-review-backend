@@ -31,5 +31,5 @@ public interface NewsService {
      *
      * @param nid NID
      */
-    void deleteMomentsByNid(Long nid);
+    void deleteNewsByNid(Long nid);
 }

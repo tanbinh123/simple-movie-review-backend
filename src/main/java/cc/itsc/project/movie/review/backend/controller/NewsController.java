@@ -49,7 +49,7 @@ public class NewsController {
             @ApiImplicitParam(name = "pageSize",value = "页码大小",example = "20")
     })
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ServiceResponseMessage<PageOfInfoListRsp<NewsRsp>> fetchPageOfMoments(@Min(value = 1,message = "页码数最少为1")@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+    public ServiceResponseMessage<PageOfInfoListRsp<NewsRsp>> fetchPageOfNews(@Min(value = 1,message = "页码数最少为1")@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                                                                  @Min (value = 1,message = "每页数量最小为1")@RequestParam(value = "pageSize",defaultValue = "20") Integer pageSize) {
         PageOfInfoListRsp<NewsRsp> pageOfMomentsRep = newsService.fetchPageOfNewsByPageInfo(pageNo,pageSize);
         return ServiceResponseMessage.createBySuccessCodeMessage(pageOfMomentsRep);
@@ -59,8 +59,8 @@ public class NewsController {
     @ApiOperation("# 删除News")
     @Security(roles = RoleEnum.ADMIN)
     @DeleteMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ServiceResponseMessage<DefaultHttpRsp> deleteMomentsByMid(@Min (value = 0,message = "NewId不能为空") @RequestParam(value = "nid") Long nid) {
-        newsService.deleteMomentsByNid(nid);
+    public ServiceResponseMessage<DefaultHttpRsp> deleteNewsByNid(@Min (value = 0,message = "NewId不能为空") @RequestParam(value = "nid") Long nid) {
+        newsService.deleteNewsByNid(nid);
         return ServiceResponseMessage.createBySuccessCodeMessage();
     }
 }
