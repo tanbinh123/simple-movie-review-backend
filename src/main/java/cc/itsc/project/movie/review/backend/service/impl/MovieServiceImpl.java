@@ -88,6 +88,12 @@ public class MovieServiceImpl implements MovieService {
         return buildPageOfMovieDetailRspByPageHelperInfo(pageOfMovieMidWithClassify);
     }
 
+    @Override
+    public PageOfInfoListRsp<MovieDetailRsp> searchMovieDetailsByPageInfo(Integer pageNo, Integer pageSize) {
+        PageHelper.startPage(pageNo,pageSize);
+        PageInfo<MoviePO> pageOfMovie = new PageInfo<>(movieDao.selectAllMovieList());
+        return buildPageOfMovieDetailRspByPageHelperInfo(pageOfMovie);
+    }
 
     @Override
     public MovieDetailRsp fetchMovieDetailsByMid(Long mid) {

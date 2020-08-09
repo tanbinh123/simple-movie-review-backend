@@ -192,5 +192,11 @@
         delete from movie_review where rid = #{rid}
     </delete>
 
+    <select id="selectAllMovieList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from movie
+    </select>
+
 
 </mapper>

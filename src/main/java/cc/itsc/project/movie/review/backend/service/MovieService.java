@@ -81,4 +81,13 @@ public interface MovieService {
     MovieDetailRsp fetchMovieDetailsByMid(Long mid);
 
     void deleteReviewMovieWithRid(Long rid);
+
+    /**
+     * 查询所有的电影信息
+     *
+     * @param pageNo 分页信息
+     * @param pageSize 每页的数量
+     * @return 电影的详细详细拉取结果
+     */
+    PageOfInfoListRsp<MovieDetailRsp> searchMovieDetailsByPageInfo(Integer pageNo, Integer pageSize);
 }
