@@ -1,5 +1,0 @@
-GET {{baseUrl}}/news
-Content-Type: application/json
-
-
-###
