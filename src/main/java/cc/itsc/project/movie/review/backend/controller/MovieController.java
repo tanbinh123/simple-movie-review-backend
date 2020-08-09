@@ -110,7 +110,7 @@ public class MovieController {
 
     @ApiOperation(value = "#* 检索电影基本信息",notes = "不包括电影影评")
     @Security(roles = RoleEnum.ADMIN)
-    @GetMapping(value = "/classify",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all",produces = MediaType.APPLICATION_JSON_VALUE)
     public ServiceResponseMessage<PageOfInfoListRsp<MovieDetailRsp>> searchAllMovieDetails(
             @Min(value = 1,message = "页码数最少为1")@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
             @Min (value = 1,message = "每页数量最小为1")@RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
