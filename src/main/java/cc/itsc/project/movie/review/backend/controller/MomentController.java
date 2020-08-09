@@ -39,7 +39,7 @@ public class MomentController {
     }
 
     @Security(roles = RoleEnum.USER)
-    @PostMapping(value = "/",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("#* 创建影圈")
     public ServiceResponseMessage<DefaultHttpRsp> insertNewMomentsDetail(@RequestBody @Validated MomentsReq momentsReq) {
         momentsService.insertNewMomentsDetail(momentsReq);
@@ -53,7 +53,7 @@ public class MomentController {
             @ApiImplicitParam(name = "pageNo",value = "页码数",example = "1"),
             @ApiImplicitParam(name = "pageSize",value = "页码大小",example = "20")
     })
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ServiceResponseMessage<PageOfInfoListRsp<MomentsRsp>> fetchPageOfMoments(@Min(value = 1,message = "页码数最少为1")@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
                                                                                          @Min (value = 1,message = "每页数量最小为1")@RequestParam(value = "pageSize",defaultValue = "20") Integer pageSize) {
         PageOfInfoListRsp<MomentsRsp> pageOfMomentsRep = momentsService.fetchPageOfMomentsByPageInfo(pageNo,pageSize);
@@ -90,7 +90,7 @@ public class MomentController {
 
     @ApiOperation("# 删除Moment")
     @Security(roles = RoleEnum.ADMIN)
-    @DeleteMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ServiceResponseMessage<DefaultHttpRsp> deleteMomentsByMid(@Min (value = 0,message = "MomentsId不能为空") @RequestParam(value = "mid") Long mid) {
         momentsService.deleteMomentsByMid(mid);
         return ServiceResponseMessage.createBySuccessCodeMessage();
