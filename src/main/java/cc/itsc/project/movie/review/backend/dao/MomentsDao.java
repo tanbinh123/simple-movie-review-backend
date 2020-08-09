@@ -67,7 +67,7 @@ public interface MomentsDao {
      *
      * @return 查询到的Moment信息列表
      */
-    List<MomentsPO>  selectReviewMoments();
+    List<MomentsPO> selectReviewMoments();
 
     /**
      * 查询自己的Moments信息
@@ -76,4 +76,6 @@ public interface MomentsDao {
      * @return 查询到的Moment信息列表
      */
     List<MomentsPO> selectByUid(Integer userUid);
+
+    void updateReviewStatusByMid(@Param("mid") Long mid);
 }

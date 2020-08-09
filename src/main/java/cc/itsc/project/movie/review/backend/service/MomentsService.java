@@ -50,4 +50,6 @@ public interface MomentsService {
      * @return 查询后的每页的影评信息, 带分页信息
      */
     PageOfInfoListRsp<MomentsRsp> fetchPageOfMomentsByMe(Integer pageNo, Integer pageSize);
+
+    void reviewPassPageOfMomentsByMid(Long mid);
 }

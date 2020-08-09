@@ -152,5 +152,9 @@
     order by create_time desc
   </select>
 
+  <update id="updateReviewStatusByMid">
+    update moments set review = 1 where mid = #{mid}
+  </update>
+
 
 </mapper>

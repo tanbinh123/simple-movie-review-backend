@@ -54,6 +54,11 @@ public class MomentsServiceImpl implements MomentsService {
     }
 
     @Override
+    public void reviewPassPageOfMomentsByMid(Long mid) {
+        momentsDao.updateReviewStatusByMid(mid);
+    }
+
+    @Override
     public void deleteMomentsByMid(Long mid) {
         momentsDao.deleteByPrimaryKey(mid);
     }

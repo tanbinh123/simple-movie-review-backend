@@ -88,6 +88,15 @@ public class MomentController {
         return ServiceResponseMessage.createBySuccessCodeMessage(pageOfMomentsRep);
     }
 
+    @Security(roles = RoleEnum.ADMIN)
+    @ApiOperation("# 标记Moments审核通过")
+    @PutMapping(value = "/review", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ServiceResponseMessage<DefaultHttpRsp> reviewPassPageOfMoments(@Min (value = 0,message = "MomentsId不能为空") @RequestParam(value = "mid") Long mid) {
+        momentsService.reviewPassPageOfMomentsByMid(mid);
+        return ServiceResponseMessage.createBySuccessCodeMessage();
+    }
+
+
     @ApiOperation("# 删除Moment")
     @Security(roles = RoleEnum.ADMIN)
     @DeleteMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
