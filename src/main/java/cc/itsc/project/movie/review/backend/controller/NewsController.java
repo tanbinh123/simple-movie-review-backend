@@ -3,11 +3,11 @@ package cc.itsc.project.movie.review.backend.controller;
 import cc.itsc.project.movie.review.backend.annotation.Security;
 import cc.itsc.project.movie.review.backend.pojo.enums.RoleEnum;
 import cc.itsc.project.movie.review.backend.pojo.vo.common.ServiceResponseMessage;
-import cc.itsc.project.movie.review.backend.pojo.vo.req.MomentsReq;
+import cc.itsc.project.movie.review.backend.pojo.vo.req.NewsReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.DefaultHttpRsp;
-import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MomentsRsp;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.NewsRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.PageOfInfoListRsp;
-import cc.itsc.project.movie.review.backend.service.MomentsService;
+import cc.itsc.project.movie.review.backend.service.NewsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -27,17 +27,17 @@ import javax.validation.constraints.Min;
 @RestController
 @RequestMapping(value = "/news", produces = MediaType.APPLICATION_JSON_VALUE)
 public class NewsController {
-    private final MomentsService momentsService;
+    private final NewsService newsService;
 
-    public NewsController(MomentsService momentsService) {
-        this.momentsService = momentsService;
+    public NewsController(NewsService newsService) {
+        this.newsService = newsService;
     }
 
     @Security(roles = RoleEnum.ADMIN)
     @PostMapping(value = "/",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation("#* 创建公告")
-    public ServiceResponseMessage<DefaultHttpRsp> insertNewMomentsDetail(@RequestBody @Validated MomentsReq momentsReq) {
-        momentsService.insertNewMomentsDetail(momentsReq);
+    public ServiceResponseMessage<DefaultHttpRsp> insertNewNewsDetail(@RequestBody @Validated NewsReq newsReq) {
+        newsService.insertNewNewsDetail(newsReq);
        return ServiceResponseMessage.createBySuccessCodeMessage();
     }
 
@@ -49,9 +49,9 @@ public class NewsController {
             @ApiImplicitParam(name = "pageSize",value = "页码大小",example = "20")
     })
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ServiceResponseMessage<PageOfInfoListRsp<MomentsRsp>> fetchPageOfMoments(@Min(value = 1,message = "页码数最少为1")@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
-                                                                                         @Min (value = 1,message = "每页数量最小为1")@RequestParam(value = "pageSize",defaultValue = "20") Integer pageSize) {
-        PageOfInfoListRsp<MomentsRsp> pageOfMomentsRep = momentsService.fetchPageOfMomentsByPageInfo(pageNo,pageSize);
+    public ServiceResponseMessage<PageOfInfoListRsp<NewsRsp>> fetchPageOfMoments(@Min(value = 1,message = "页码数最少为1")@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                                                                                 @Min (value = 1,message = "每页数量最小为1")@RequestParam(value = "pageSize",defaultValue = "20") Integer pageSize) {
+        PageOfInfoListRsp<NewsRsp> pageOfMomentsRep = newsService.fetchPageOfNewsByPageInfo(pageNo,pageSize);
         return ServiceResponseMessage.createBySuccessCodeMessage(pageOfMomentsRep);
     }
 
@@ -60,7 +60,7 @@ public class NewsController {
     @Security(roles = RoleEnum.ADMIN)
     @DeleteMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ServiceResponseMessage<DefaultHttpRsp> deleteMomentsByMid(@Min (value = 0,message = "NewId不能为空") @RequestParam(value = "nid") Long nid) {
-        momentsService.deleteMomentsByMid(nid);
+        newsService.deleteMomentsByNid(nid);
         return ServiceResponseMessage.createBySuccessCodeMessage();
     }
 }

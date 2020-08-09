@@ -1,44 +1,30 @@
 package cc.itsc.project.movie.review.backend.pojo.po;
 
-/**
- * @author Leonardo iWzl
- *
- * @version 1.0
- * @date 2020/2/23 15:01
- */
 public class NewsPO {
-    private int id;
-    private String title;
-    private int type;
+    private Long nid;
+
+    private Long uid;
+
     private String content;
-    private String image;
-    private int top;
-    private long createTime;
-    private int createBy;
-    private int status;
 
-    public int getId() {
-        return id;
+    private Long createTime;
+
+    private Integer status;
+
+    public Long getNid() {
+        return nid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setNid(Long nid) {
+        this.nid = nid;
     }
 
-    public String getTitle() {
-        return title;
+    public Long getUid() {
+        return uid;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
+    public void setUid(Long uid) {
+        this.uid = uid;
     }
 
     public String getContent() {
@@ -49,43 +35,19 @@ public class NewsPO {
         this.content = content;
     }
 
-    public int getTop() {
-        return top;
-    }
-
-    public void setTop(int top) {
-        this.top = top;
-    }
-
-    public long getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(long createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 
-    public int getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(int createBy) {
-        this.createBy = createBy;
-    }
-
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 }
