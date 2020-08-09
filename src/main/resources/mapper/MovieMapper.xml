@@ -185,7 +185,7 @@
     </select>
 
     <select id="selectMovieClassifyByMid" resultType="java.lang.String">
-        select mid from movie_classify where mid =#{mid}
+        select classify from movie_classify where mid =#{mid}
     </select>
 
     <delete id="deleteReviewMovieWithRid">
