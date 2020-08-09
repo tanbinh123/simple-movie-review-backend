@@ -136,5 +136,21 @@
     order by create_time desc
   </select>
 
+  <select id="selectReviewMoments" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from moments
+    where review = 0
+    order by create_time desc
+  </select>
+
+  <select id="selectByUid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from moments
+    where uid = #{userUid}
+    order by create_time desc
+  </select>
+
 
 </mapper>

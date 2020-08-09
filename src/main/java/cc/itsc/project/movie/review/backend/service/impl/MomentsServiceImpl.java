@@ -39,6 +39,25 @@ public class MomentsServiceImpl implements MomentsService {
         return coverToPageOfMomentRsp(pageOfMoments);
     }
 
+    @Override
+    public PageOfInfoListRsp<MomentsRsp> fetchReviewPageOfMoments(Integer pageNo, Integer pageSize) {
+        PageHelper.startPage(pageNo,pageSize);
+        PageInfo<MomentsPO> pageOfMoments = new PageInfo<>(momentsDao.selectReviewMoments());
+        return coverToPageOfMomentRsp(pageOfMoments);
+    }
+
+    @Override
+    public PageOfInfoListRsp<MomentsRsp> fetchPageOfMomentsByMe(Integer pageNo, Integer pageSize) {
+        PageHelper.startPage(pageNo,pageSize);
+        PageInfo<MomentsPO> pageOfMoments = new PageInfo<>(momentsDao.selectByUid(HttpUtil.getUserUid()));
+        return coverToPageOfMomentRsp(pageOfMoments);
+    }
+
+    @Override
+    public void deleteMomentsByMid(Long mid) {
+        momentsDao.deleteByPrimaryKey(mid);
+    }
+
     private PageOfInfoListRsp<MomentsRsp> coverToPageOfMomentRsp(PageInfo<MomentsPO> momentsPageInfo){
         PageOfInfoListRsp<MomentsRsp> pageOfMomentsRsp = new PageOfInfoListRsp<>();
         pageOfMomentsRsp.setDataList(momentsPageInfo.getList().stream().map((moments->{

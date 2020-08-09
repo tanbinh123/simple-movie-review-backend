@@ -62,4 +62,18 @@ public interface MomentsDao {
      */
     List<MomentsPO> selectAllEnableMomentsByUin(@Param("userUid") Integer userUid);
 
+    /**
+     * 查询可用的Moments信息
+     *
+     * @return 查询到的Moment信息列表
+     */
+    List<MomentsPO>  selectReviewMoments();
+
+    /**
+     * 查询自己的Moments信息
+     *
+     * @param userUid 用户Uid
+     * @return 查询到的Moment信息列表
+     */
+    List<MomentsPO> selectByUid(Integer userUid);
 }

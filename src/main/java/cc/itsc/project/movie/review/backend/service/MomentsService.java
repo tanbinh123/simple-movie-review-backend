@@ -4,6 +4,7 @@ package cc.itsc.project.movie.review.backend.service;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.MomentsReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MomentsRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.PageOfInfoListRsp;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author Leonardo iWzl
@@ -20,9 +21,33 @@ public interface MomentsService {
     /**
      * 分页获取电影信息请求信息
      *
-     * @param pageNo 分页页码
+     * @param pageNo   分页页码
      * @param pageSize 每页的数量
-     * @return 查询后的每页的影评信息,带分页信息
+     * @return 查询后的每页的影评信息, 带分页信息
      */
     PageOfInfoListRsp<MomentsRsp> fetchPageOfMomentsByPageInfo(Integer pageNo, Integer pageSize);
+
+    /**
+     * 分页待审核的Moments信息
+     *
+     * @param pageNo   分页页码
+     * @param pageSize 每页的数量
+     * @return 查询后的每页的影评信息, 带分页信息
+     */
+    PageOfInfoListRsp<MomentsRsp> fetchReviewPageOfMoments(Integer pageNo, Integer pageSize);
+
+
+    /**
+     * 根据MomentsId删除Id
+     *
+     * @param mid MomentsId
+     */
+    void deleteMomentsByMid(@Param("mid") Long mid);
+
+    /**
+     * @param pageNo   分页页码
+     * @param pageSize 每页的数量
+     * @return 查询后的每页的影评信息, 带分页信息
+     */
+    PageOfInfoListRsp<MomentsRsp> fetchPageOfMomentsByMe(Integer pageNo, Integer pageSize);
 }

@@ -59,40 +59,40 @@ public class MomentController {
         PageOfInfoListRsp<MomentsRsp> pageOfMomentsRep = momentsService.fetchPageOfMomentsByPageInfo(pageNo,pageSize);
         return ServiceResponseMessage.createBySuccessCodeMessage(pageOfMomentsRep);
     }
-//
-//    @ApiOperation("#* 用户注册")
-//    @Security(roles = RoleEnum.USER)
-//    @PostMapping(value = "/sign/up", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ServiceResponseMessage<SignRsp> signUp(@RequestBody @Validated SignUpReq signUpReq) {
-//        return null;
-//    }
-//
-//    @ApiOperation("#* 修改用户信息")
-//    @Security(roles = {RoleEnum.USER, RoleEnum.ADMIN})
-//    @PutMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ServiceResponseMessage<UserProfileRsp> modifyProfile(@RequestBody @Validated ModifyProfileReq modifyProfileReq) {
-//        return null;
-//    }
-//
-//    @ApiOperation("#* 获取用户信息")
-//    @Security(roles = {RoleEnum.USER, RoleEnum.ADMIN})
-//    @GetMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ApiImplicitParam(name = "uid",value = "用户Uid",example = "123456")
-//    public ServiceResponseMessage<UserProfileRsp> fetchProfileByUid(@RequestParam(value = "uid",required = false) Integer uid) {
-//        return null;
-//    }
-//
-//    @ApiOperation("#* 修改用户密码")
-//    @Security(roles = {RoleEnum.ADMIN,RoleEnum.USER})
-//    @PutMapping(value = "/profile/password", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ServiceResponseMessage<DefaultHttpRsp> modifyAccountPassword(@RequestBody @Validated ModifyAccountPasswordReq modifyAccountPasswordReq) {
-//        return null;
-//    }
-//
-//    @ApiOperation("# 删除用户")
-//    @Security(roles = RoleEnum.ADMIN)
-//    @DeleteMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ServiceResponseMessage<DefaultHttpRsp> deleteAccountProfile(@RequestParam(value = "uid") Integer uid) {
-//        return null;
-//    }
+
+
+    @Security(roles = RoleEnum.USER)
+    @ApiOperation("# 分页自己的Moment信息")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "pageNo",value = "页码数",example = "1"),
+            @ApiImplicitParam(name = "pageSize",value = "页码大小",example = "20")
+    })
+    @GetMapping(value = "/moments/review", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ServiceResponseMessage<PageOfInfoListRsp<MomentsRsp>> fetchPageOfMomentsByMe(@Min(value = 1,message = "页码数最少为1")@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                                                                                          @Min (value = 1,message = "每页数量最小为1")@RequestParam(value = "pageSize",defaultValue = "20") Integer pageSize) {
+        PageOfInfoListRsp<MomentsRsp> pageOfMomentsRep = momentsService.fetchPageOfMomentsByMe(pageNo,pageSize);
+        return ServiceResponseMessage.createBySuccessCodeMessage(pageOfMomentsRep);
+    }
+
+
+    @Security(roles = RoleEnum.ADMIN)
+    @ApiOperation("# 分页待审核的Moment信息")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "pageNo",value = "页码数",example = "1"),
+            @ApiImplicitParam(name = "pageSize",value = "页码大小",example = "20")
+    })
+    @GetMapping(value = "/moments/review", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ServiceResponseMessage<PageOfInfoListRsp<MomentsRsp>> fetchReviewPageOfMoments(@Min(value = 1,message = "页码数最少为1")@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                                                                                    @Min (value = 1,message = "每页数量最小为1")@RequestParam(value = "pageSize",defaultValue = "20") Integer pageSize) {
+        PageOfInfoListRsp<MomentsRsp> pageOfMomentsRep = momentsService.fetchReviewPageOfMoments(pageNo,pageSize);
+        return ServiceResponseMessage.createBySuccessCodeMessage(pageOfMomentsRep);
+    }
+
+    @ApiOperation("# 删除Moment")
+    @Security(roles = RoleEnum.ADMIN)
+    @DeleteMapping(value = "/moment", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ServiceResponseMessage<DefaultHttpRsp> deleteMomentsByMid(@Min (value = 0,message = "MomentsId不能为空") @RequestParam(value = "mid") Long mid) {
+        momentsService.deleteMomentsByMid(mid);
+        return ServiceResponseMessage.createBySuccessCodeMessage();
+    }
 }
