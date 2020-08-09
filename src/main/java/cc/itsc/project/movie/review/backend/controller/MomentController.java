@@ -28,7 +28,7 @@ import javax.validation.constraints.Min;
  * @version 1.0
  */
 
-@Api(tags = "账户模块")
+@Api(tags = "影圈模块")
 @RestController
 @RequestMapping(value = "/moment", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MomentController {
