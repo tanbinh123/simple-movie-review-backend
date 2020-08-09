@@ -1,7 +1,5 @@
 package cc.itsc.project.movie.review.backend.service;
 
-import cc.itsc.project.movie.review.backend.pojo.vo.common.ServiceResponseMessage;
-import cc.itsc.project.movie.review.backend.pojo.vo.rsp.UploadImageRsp;
 import org.springframework.web.multipart.MultipartFile;
 
 /**

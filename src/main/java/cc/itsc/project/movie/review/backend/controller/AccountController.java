@@ -133,7 +133,7 @@ public class AccountController {
         }
     }
 
-    @Security(roles = RoleEnum.USER)
+    @Security(roles = RoleEnum.ADMIN)
     @ApiOperation("# 分页拉取用户Profile信息")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "pageNo",value = "页码数",example = "1"),
