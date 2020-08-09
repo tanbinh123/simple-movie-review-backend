@@ -59,7 +59,7 @@ public class FeedbackController {
     @ApiOperation("# 删除Feedback")
     @Security(roles = RoleEnum.ADMIN)
     @DeleteMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ServiceResponseMessage<DefaultHttpRsp> deleteMomentsByMid(@Min (value = 0,message = "NewId不能为空") @RequestParam(value = "fid") Long fid) {
+    public ServiceResponseMessage<DefaultHttpRsp> deleteFeedbackByFid(@Min (value = 0,message = "NewId不能为空") @RequestParam(value = "fid") Long fid) {
         feedbackService.deleteFeedbackByFid(fid);
         return ServiceResponseMessage.createBySuccessCodeMessage();
     }
