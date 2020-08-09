@@ -127,4 +127,9 @@ public class MovieServiceImpl implements MovieService {
         BeanUtils.copyProperties(pageOfMovie, pageOfMoviesRsp);
         return pageOfMoviesRsp;
     }
+
+    @Override
+    public void deleteReviewMovieWithRid(Long rid) {
+        movieDao.deleteReviewMovieWithRid(rid);
+    }
 }

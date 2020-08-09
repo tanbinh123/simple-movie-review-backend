@@ -188,5 +188,9 @@
         select mid from movie_classify where mid =#{mid}
     </select>
 
+    <delete id="deleteReviewMovieWithRid">
+        delete from movie_review where rid = #{rid}
+    </delete>
+
 
 </mapper>

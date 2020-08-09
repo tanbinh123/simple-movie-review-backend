@@ -124,4 +124,12 @@ public class MovieController {
         MovieDetailRsp movieDetailRsp = movieService.insertNewMovieReview(movieReviewReq);
         return ServiceResponseMessage.createBySuccessCodeMessage(movieDetailRsp);
     }
+
+    @ApiOperation(value = "#* 删除影评",notes = "删除影评")
+    @Security(roles = RoleEnum.ADMIN)
+    @DeleteMapping(value = "/review",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ServiceResponseMessage<DefaultHttpRsp> deleteReviewMovieWithRid(@Min (value = 1,message = "不能为空") @Validated Long rid) {
+        movieService.deleteReviewMovieWithRid(rid);
+        return ServiceResponseMessage.createBySuccessCodeMessage();
+    }
 }

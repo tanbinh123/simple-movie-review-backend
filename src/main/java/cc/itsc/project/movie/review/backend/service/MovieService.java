@@ -79,4 +79,6 @@ public interface MovieService {
      * @return 电影的详细详细拉取结果
      */
     MovieDetailRsp fetchMovieDetailsByMid(Long mid);
+
+    void deleteReviewMovieWithRid(Long rid);
 }

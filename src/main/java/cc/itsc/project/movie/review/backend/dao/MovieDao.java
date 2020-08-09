@@ -61,4 +61,6 @@ public interface MovieDao {
      * @return 查询到的电影ID
      */
     List<String> selectMovieClassifyByMid(@Param("mid") Long mid);
+
+    void deleteReviewMovieWithRid(@Param("rid") Long rid);
 }
