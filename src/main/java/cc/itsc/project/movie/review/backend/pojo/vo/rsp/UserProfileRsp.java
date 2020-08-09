@@ -36,6 +36,8 @@ public class UserProfileRsp implements HttpResponse {
     private Long updateTime;
     @ApiModelProperty(value = "用户的角色",example = "Admin",required = true)
     private String role;
+    @ApiModelProperty(value = "上次登录时间",example = "1595586247000",required = true)
+    private Long lastLoginTime;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @ApiModelProperty(hidden = true)
@@ -143,5 +145,13 @@ public class UserProfileRsp implements HttpResponse {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Long getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Long lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
 }

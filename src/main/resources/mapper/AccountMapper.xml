@@ -11,13 +11,13 @@
 </select>
 
 <insert id="insertAccountDetail">
-    insert into account(role,account,secret_key,password,nike_name,gender,avatar,create_time,update_time)
+    insert into account(role,account,secret_key,password,nike_name,gender,avatar,create_time,update_time,last_login_time)
       values (#{accountInfo.role},#{accountInfo.account},#{accountInfo.secretKey},#{accountInfo.password},
-      #{accountInfo.nikeName},#{accountInfo.gender},#{accountInfo.avatar},#{accountInfo.createTime},#{accountInfo.createTime})
+      #{accountInfo.nikeName},#{accountInfo.gender},#{accountInfo.avatar},#{accountInfo.createTime},#{accountInfo.createTime},UNIX_TIMESTAMP(now()) * 1000)
 </insert>
 
 <select id="selectAccountInfoByUid" resultType="cc.itsc.project.movie.review.backend.pojo.po.AccountPO">
-    select uid, role, account, secret_key, password, birthday, nike_name, gender, signature, avatar, background, status, create_time, update_time
+    select uid, role, account, secret_key, password, birthday, nike_name, gender, signature, avatar, background, status, create_time, update_time,last_login_time
     from account where uid = #{uid}
     limit 1
 </select>
@@ -57,11 +57,13 @@
 </delete>
 
 <select id="selectAllAccountInfo" resultType="cc.itsc.project.movie.review.backend.pojo.po.AccountPO">
-    select uid, role, account, secret_key, password, birthday, nike_name, gender, signature, avatar, background, status, create_time, update_time
+    select uid, role, account, secret_key, password, birthday, nike_name, gender, signature, avatar, background, status, create_time, update_time,last_login_time
      from account
 </select>
 
-
+<update id="refreshAccountLastLoginTime">
+    update account set last_login_time = UNIX_TIMESTAMP(now()) * 1000 where uid = #{uid}
+</update>
 
 
 </mapper>

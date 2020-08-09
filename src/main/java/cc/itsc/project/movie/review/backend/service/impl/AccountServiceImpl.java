@@ -51,6 +51,7 @@ public class AccountServiceImpl implements AccountService {
         if(!isVerificationSuccess){
             throw new AccountVerificationFailedException();
         }else {
+            accountDao.refreshAccountLastLoginTime(accountInfo.getUid());
             SignRsp signRsp = new SignRsp();
             signRsp.setUid(accountInfo.getUid());
             signRsp.setToken(JWTUtil.createToken(accountInfo.getUid(),

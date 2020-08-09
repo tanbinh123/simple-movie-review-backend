@@ -113,4 +113,7 @@ public interface AccountDao {
      * @return 查询完成的处理结果
      */
     int updateProfileAccountByUid(@Param("accountInfo") AccountPO accountInfo);
+
+
+    void refreshAccountLastLoginTime(@Param("uid") Integer uid);
 }

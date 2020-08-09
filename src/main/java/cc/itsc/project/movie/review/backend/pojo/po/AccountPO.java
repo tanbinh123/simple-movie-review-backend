@@ -21,6 +21,7 @@ public class AccountPO {
     private Integer status;
     private Long createTime;
     private Long updateTime;
+    private Long lastLoginTime;
 
     public Integer getUid() {
         return uid;
@@ -134,22 +135,12 @@ public class AccountPO {
         this.secretKey = secretKey;
     }
 
-    @Override
-    public String toString() {
-        return "AccountPO{" +
-                "uid=" + uid +
-                ", role='" + role + '\'' +
-                ", account='" + account + '\'' +
-                ", password='" + password + '\'' +
-                ", birthday=" + birthday +
-                ", nikeName='" + nikeName + '\'' +
-                ", gender='" + gender + '\'' +
-                ", signature='" + signature + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", background='" + background + '\'' +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
+    public Long getLastLoginTime() {
+        return lastLoginTime;
     }
+
+    public void setLastLoginTime(Long lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
 }
