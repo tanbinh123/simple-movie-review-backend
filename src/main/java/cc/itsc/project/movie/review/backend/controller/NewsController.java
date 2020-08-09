@@ -55,6 +55,7 @@ public class NewsController {
         return ServiceResponseMessage.createBySuccessCodeMessage(pageOfMomentsRep);
     }
 
+
     @ApiOperation("# 删除News")
     @Security(roles = RoleEnum.ADMIN)
     @DeleteMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
