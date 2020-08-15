@@ -135,9 +135,11 @@ public class MovieServiceImpl implements MovieService {
             BeanUtils.copyProperties(review, movieReviewRsp);
             movieReviewRsp.setUserProfileRsp(accountService.fetchUserProfileByUid(review.getUid()));
             MoviePO movie =  movieDao.selectByPrimaryKey(review.getMid());
-            MovieDetailRsp movieDetailRsp = new MovieDetailRsp();
-            BeanUtils.copyProperties(movie,movieDetailRsp);
-            movieReviewRsp.setMovieDetailRsp(movieDetailRsp);
+            if(null != movie){
+                MovieDetailRsp movieDetailRsp = new MovieDetailRsp();
+                BeanUtils.copyProperties(movie,movieDetailRsp);
+                movieReviewRsp.setMovieDetailRsp(movieDetailRsp);
+            }
             return movieReviewRsp;
         }).collect(Collectors.toList()));
         return movieReviewRspPageOfInfoListRsp;
