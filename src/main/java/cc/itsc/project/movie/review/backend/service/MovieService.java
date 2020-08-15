@@ -4,6 +4,7 @@ import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyMovieReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieDetailReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieReviewReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MovieDetailRsp;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MovieReviewRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.PageOfInfoListRsp;
 
 import java.util.List;
@@ -90,4 +91,13 @@ public interface MovieService {
      * @return 电影的详细详细拉取结果
      */
     PageOfInfoListRsp<MovieDetailRsp> searchMovieDetailsByPageInfo(Integer pageNo, Integer pageSize);
+
+    /**
+     * 分页拉取用户电影影评信息
+     *
+     * @param pageNo 页码
+     * @param pageSize 每页的数量
+     * @return 查询的影评信息
+     */
+    PageOfInfoListRsp<MovieReviewRsp> fetchReviewPageOfMomentsReview(Integer pageNo, Integer pageSize);
 }

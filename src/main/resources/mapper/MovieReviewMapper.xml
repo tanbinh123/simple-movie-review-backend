@@ -107,4 +107,10 @@
   <select id="selectReviewListByMid" resultMap="BaseResultMap">
     select * from movie_review where mid = #{mid} order by review_time desc
   </select>
+
+  <select id="selectAllReviewList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from movie_review order by review_time desc
+  </select>
 </mapper>

@@ -63,4 +63,11 @@ public interface MovieReviewDao {
      * @return 电影影评信息
      */
     List<MovieReviewPO> selectReviewListByMid(@Param("mid") Long mid);
+
+    /**
+     * 查询所有的电影影评信息
+     *
+     * @return 电影影评信息
+     */
+    List<MovieReviewPO> selectAllReviewList();
 }

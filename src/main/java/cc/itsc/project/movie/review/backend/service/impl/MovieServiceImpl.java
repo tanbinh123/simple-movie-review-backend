@@ -10,6 +10,7 @@ import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieDetailReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieReviewReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MovieDetailRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MovieReviewDetailRsp;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MovieReviewRsp;
 import cc.itsc.project.movie.review.backend.pojo.vo.rsp.PageOfInfoListRsp;
 import cc.itsc.project.movie.review.backend.service.AccountService;
 import cc.itsc.project.movie.review.backend.service.MovieService;
@@ -17,6 +18,7 @@ import cc.itsc.project.movie.review.backend.utils.HttpUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -122,6 +124,26 @@ public class MovieServiceImpl implements MovieService {
         return fetchMovieDetailsByMid(movieReviewReq.getMid());
     }
 
+    @Override
+    public PageOfInfoListRsp<MovieReviewRsp> fetchReviewPageOfMomentsReview(Integer pageNo, Integer pageSize) {
+        PageOfInfoListRsp<MovieReviewRsp> movieReviewRspPageOfInfoListRsp = new PageOfInfoListRsp<>();
+        PageHelper.startPage(pageNo,pageSize);
+        PageInfo<MovieReviewPO> movieReviewsList = new PageInfo<>(movieReviewDao.selectAllReviewList());
+        BeanUtils.copyProperties(movieReviewsList, movieReviewRspPageOfInfoListRsp);
+        movieReviewRspPageOfInfoListRsp.setDataList(movieReviewsList.getList().stream().map(review->{
+            MovieReviewRsp movieReviewRsp = new MovieReviewRsp();
+            BeanUtils.copyProperties(review, movieReviewRsp);
+            movieReviewRsp.setUserProfileRsp(accountService.fetchUserProfileByUid(review.getUid()));
+            MoviePO movie =  movieDao.selectByPrimaryKey(review.getMid());
+            MovieDetailRsp movieDetailRsp = new MovieDetailRsp();
+            BeanUtils.copyProperties(movie,movieDetailRsp);
+            movieReviewRsp.setMovieDetailRsp(movieDetailRsp);
+            return movieReviewRsp;
+        }).collect(Collectors.toList()));
+        return movieReviewRspPageOfInfoListRsp;
+    }
+
+
     private PageOfInfoListRsp<MovieDetailRsp> buildPageOfMovieDetailRspByPageHelperInfo(PageInfo<MoviePO>  pageOfMovie){
         PageOfInfoListRsp<MovieDetailRsp> pageOfMoviesRsp = new PageOfInfoListRsp<>();
         pageOfMoviesRsp.setDataList(pageOfMovie.getList().stream().map((movieInfo->{
@@ -133,6 +155,7 @@ public class MovieServiceImpl implements MovieService {
         BeanUtils.copyProperties(pageOfMovie, pageOfMoviesRsp);
         return pageOfMoviesRsp;
     }
+
 
     @Override
     public void deleteReviewMovieWithRid(Long rid) {

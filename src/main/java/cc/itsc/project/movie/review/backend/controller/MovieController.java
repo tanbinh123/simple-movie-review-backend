@@ -7,10 +7,7 @@ import cc.itsc.project.movie.review.backend.pojo.vo.req.ClassifiesReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.ModifyMovieReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieDetailReq;
 import cc.itsc.project.movie.review.backend.pojo.vo.req.MovieReviewReq;
-import cc.itsc.project.movie.review.backend.pojo.vo.rsp.ClassifiesRsp;
-import cc.itsc.project.movie.review.backend.pojo.vo.rsp.DefaultHttpRsp;
-import cc.itsc.project.movie.review.backend.pojo.vo.rsp.MovieDetailRsp;
-import cc.itsc.project.movie.review.backend.pojo.vo.rsp.PageOfInfoListRsp;
+import cc.itsc.project.movie.review.backend.pojo.vo.rsp.*;
 import cc.itsc.project.movie.review.backend.service.MovieService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -134,6 +131,20 @@ public class MovieController {
     public ServiceResponseMessage<MovieDetailRsp> reviewMovieWithMid(@RequestBody @Validated MovieReviewReq movieReviewReq) {
         MovieDetailRsp movieDetailRsp = movieService.insertNewMovieReview(movieReviewReq);
         return ServiceResponseMessage.createBySuccessCodeMessage(movieDetailRsp);
+    }
+
+
+    @Security(roles = RoleEnum.ADMIN)
+    @ApiOperation("# 分页拉取影评")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "pageNo",value = "页码数",example = "1"),
+            @ApiImplicitParam(name = "pageSize",value = "页码大小",example = "20")
+    })
+    @GetMapping(value = "/review/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ServiceResponseMessage<PageOfInfoListRsp<MovieReviewRsp>> fetchReviewPageOfMomentsReview(@Min(value = 1,message = "页码数最少为1")@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo,
+                                                                                          @Min (value = 1,message = "每页数量最小为1")@RequestParam(value = "pageSize",defaultValue = "20") Integer pageSize) {
+        PageOfInfoListRsp<MovieReviewRsp> pageOfMomentsReviewRep = movieService.fetchReviewPageOfMomentsReview(pageNo,pageSize);
+        return ServiceResponseMessage.createBySuccessCodeMessage(pageOfMomentsReviewRep);
     }
 
     @ApiOperation(value = "#* 删除影评",notes = "删除影评")
