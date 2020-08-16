@@ -47,7 +47,7 @@ public class MomentController {
     }
 
 
-    @Security(roles = RoleEnum.USER)
+    @Security(roles = RoleEnum.ALL)
     @ApiOperation("# 分页拉取Moment信息")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "pageNo",value = "页码数",example = "1"),
