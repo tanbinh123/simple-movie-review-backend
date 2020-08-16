@@ -32,7 +32,7 @@ public class CommonController {
 
     @ResponseBody
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    @Security(roles = RoleEnum.USER,checkToken = false)
+    @Security(roles = RoleEnum.ALL,checkToken = false)
     @ApiOperation("#* 用户图片相关信息上传")
     public ServiceResponseMessage<UploadImageRsp> upload(@NotNull @RequestParam("imageFile") MultipartFile imageFile) {
         if (imageFile.isEmpty()) {
