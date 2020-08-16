@@ -6,8 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("反馈信息")
 public class FeedbackRsp implements HttpResponse {
-    @ApiModelProperty(value = "nid",example = "1234")
-    private Long nid;
+    @ApiModelProperty(value = "fid",example = "1234")
+    private Long fid;
 
     @ApiModelProperty(value = "反馈用户uid",example = "123456")
     private Long uid;
@@ -18,12 +18,12 @@ public class FeedbackRsp implements HttpResponse {
     @ApiModelProperty(value = "创建时间",example = "1235654645345")
     private Long createTime;
 
-    public Long getNid() {
-        return nid;
+    public Long getFid() {
+        return fid;
     }
 
-    public void setNid(Long nid) {
-        this.nid = nid;
+    public void setFid(Long fid) {
+        this.fid = fid;
     }
 
     public Long getUid() {

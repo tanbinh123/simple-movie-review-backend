@@ -90,9 +90,9 @@ public class MomentController {
 
     @Security(roles = RoleEnum.ADMIN)
     @ApiOperation("# 标记Moments审核通过")
-    @PutMapping(value = "/review", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ServiceResponseMessage<DefaultHttpRsp> reviewPassPageOfMoments(@Min (value = 0,message = "MomentsId不能为空") @RequestParam(value = "mid") Long mid) {
-        momentsService.reviewPassPageOfMomentsByMid(mid);
+    @PutMapping(value = "/review",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ServiceResponseMessage<DefaultHttpRsp> reviewPassPageOfMoments(@RequestBody MidReq mid) {
+        momentsService.reviewPassPageOfMomentsByMid(mid.getMid());
         return ServiceResponseMessage.createBySuccessCodeMessage();
     }
 
